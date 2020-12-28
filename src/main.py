@@ -62,6 +62,9 @@ def get_frames_with_objects_det(txt_path):
         all_lines = file.readlines()
         for line in all_lines:
             line = line.split('\n')[0].split(',')[:-4]
+            if len(line) == 0:
+                continue
+            line = list(map(lambda x: round(float(x)), line))
             line = list(map(int, line))
             frame_to_objects[line[0]].extend([line[2:6]])
     return frame_to_objects
@@ -87,13 +90,13 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
         raise ValueError('Input folder not exist')
 
     logger.info('Download archive')
-    api.file.download(TEAM_ID, cur_files_path, archive_path)
-    if zipfile.is_zipfile(archive_path):
-        logger.info('Extract archive')
-        with zipfile.ZipFile(archive_path, 'r') as zip_ref:
-            zip_ref.extractall(storage_dir)
-    else:
-        raise Exception("No such file".format(ARH_NAME))
+    #api.file.download(TEAM_ID, cur_files_path, archive_path)
+    #if zipfile.is_zipfile(archive_path):
+    #    logger.info('Extract archive')
+    #    with zipfile.ZipFile(archive_path, 'r') as zip_ref:
+    #        zip_ref.extractall(storage_dir)
+    #else:
+    #    raise Exception("No such file".format(ARH_NAME))
 
     logger.info('Check input mot format')
     check_mot_format(storage_dir)
@@ -102,7 +105,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
     meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]))
     api.project.update_meta(new_project.id, meta.to_json())
     for r, d, f in os.walk(storage_dir):
-        if f == ['det.txt']:
+        if 'det.txt' in f:
             new_dataset_name = r.split('/')[-2]
             logger.info('Dataset with name {} in processing'.format(new_dataset_name))
             imgs_path = r[:-3] + 'img1'
@@ -112,7 +115,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             #seqinfo_path = r[:-3] + 'seqinfo.ini'
             #img_size = img_size_from_seqini(seqinfo_path)
             new_dataset = api.dataset.create(new_project.id, new_dataset_name, change_name_if_conflict=True)
-            frames_with_objects = get_frames_with_objects_det(os.path.join(r, f[0]))
+            frames_with_objects = get_frames_with_objects_det(os.path.join(r, 'det.txt'))
             images = os.listdir(imgs_path)
             #to_debag = 0 # TODO del comment to test project fast
             for batch in sly.batched(images):
