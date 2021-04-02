@@ -101,7 +101,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
         cur_files_path = INPUT_FOLDER + ARH_NAME
         archive_path = os.path.join(storage_dir, ARH_NAME)
     else:
-        raise ValueError('Input folder not exist')
+        raise ValueError('Input folder not exist {}'.format(INPUT_FOLDER))
 
     logger.info('Download archive')
     if not file_exists(archive_path):
