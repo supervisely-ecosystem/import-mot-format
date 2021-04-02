@@ -15,8 +15,8 @@ WORKSPACE_ID = int(os.environ['context.workspaceId'])
 #IMAGE_ID = int(os.environ['modal.state.slyImageId'])
 INPUT_FOLDER = "/mot_format/"#os.environ.get("modal.state.slyFolder")
 #INPUT_FILE = os.environ.get("modal.state.slyFile")
-ARH_NAME = os.environ.get("modal.state.slyArh")
-LINK = os.environ.get("modal.state.slyLink")
+ARH_NAME = "MOT15Labels.zip"#os.environ.get("modal.state.slyArh")
+LINK = "https://motchallenge.net/data/MOT15Labels.zip"#os.environ.get("modal.state.slyLink")
 
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
@@ -101,7 +101,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
         cur_files_path = INPUT_FOLDER + ARH_NAME
         archive_path = os.path.join(storage_dir, ARH_NAME)
     else:
-        raise ValueError('Input folder not exist {}'.format(INPUT_FOLDER))
+        raise ValueError('Input folder not exist')
 
     logger.info('Download archive')
     if not file_exists(archive_path):
