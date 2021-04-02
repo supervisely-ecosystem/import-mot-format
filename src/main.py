@@ -130,7 +130,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             if os.path.isfile(seqinfo_path):
                 img_size, frame_rate = img_size_from_seqini(seqinfo_path)
             else:
-                img = sly.imaging.image.read(os.path.join(imgs_path, images[0]))
+                img = sly.image.read(os.path.join(imgs_path, images[0]))
                 img_size = (img.shape[1], img.shape[0])
                 frame_rate = frame_rate_default
             video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'MP4V'), frame_rate, img_size)
