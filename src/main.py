@@ -182,9 +182,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 def main():
     sly.logger.info("Script arguments", extra={
         "TEAM_ID": TEAM_ID,
-        "WORKSPACE_ID": WORKSPACE_ID,
-        "PROJECT_ID": PROJECT_ID,
-        "IMAGE_ID": IMAGE_ID
+        "WORKSPACE_ID": WORKSPACE_ID
     })
 
     # Run application service
