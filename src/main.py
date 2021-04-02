@@ -4,6 +4,7 @@ import cv2
 import supervisely_lib as sly
 from supervisely_lib.annotation.tag_meta import TagValueType
 from collections import defaultdict
+from supervisely_lib.io.fs import download, file_exists
 
 
 
@@ -15,6 +16,7 @@ IMAGE_ID = int(os.environ['modal.state.slyImageId'])
 INPUT_FOLDER = os.environ.get("modal.state.slyFolder")
 INPUT_FILE = os.environ.get("modal.state.slyFile")
 ARH_NAME = os.environ.get("modal.state.slyArh")
+LINK = os.environ.get("modal.state.slyLink")
 
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
@@ -102,7 +104,9 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
         raise ValueError('Input folder not exist')
 
     logger.info('Download archive')
-    api.file.download(TEAM_ID, cur_files_path, archive_path)
+    if not file_exists(archive_path):
+        download(LINK, archive_path)
+    #api.file.download(TEAM_ID, cur_files_path, archive_path)
     if zipfile.is_zipfile(archive_path):
         logger.info('Extract archive')
         with zipfile.ZipFile(archive_path, 'r') as zip_ref:
