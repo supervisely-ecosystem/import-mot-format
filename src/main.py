@@ -11,10 +11,10 @@ from supervisely_lib.io.fs import download, file_exists
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
-IMAGE_ID = int(os.environ['modal.state.slyImageId'])
+#PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
+#IMAGE_ID = int(os.environ['modal.state.slyImageId'])
 INPUT_FOLDER = os.environ.get("modal.state.slyFolder")
-INPUT_FILE = os.environ.get("modal.state.slyFile")
+#INPUT_FILE = os.environ.get("modal.state.slyFile")
 ARH_NAME = os.environ.get("modal.state.slyArh")
 LINK = os.environ.get("modal.state.slyLink")
 
