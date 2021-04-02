@@ -11,12 +11,9 @@ from supervisely_lib.io.fs import download, file_exists
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-#PROJECT_ID = int(os.environ['modal.state.slyProjectId'])
-#IMAGE_ID = int(os.environ['modal.state.slyImageId'])
-INPUT_FOLDER = "/mot_format/"#os.environ.get("modal.state.slyFolder")
-#INPUT_FILE = os.environ.get("modal.state.slyFile")
-ARH_NAME = "MOT15Labels.zip"#os.environ.get("modal.state.slyArh")
-LINK = "https://motchallenge.net/data/MOT15Labels.zip"#os.environ.get("modal.state.slyLink")
+INPUT_FOLDER = "/mot_format/"
+ARH_NAME = "MOT15.zip"
+LINK = "https://motchallenge.net/data/MOT15.zip"
 
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
