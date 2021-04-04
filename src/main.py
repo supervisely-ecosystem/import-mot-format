@@ -151,11 +151,11 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                         ids_to_video_object[idx] = sly.VideoObject(obj_class)
                     left, top, w, h = coords
                     bottom = top + h
-                    if round(bottom) >= img_size[1]:
-                        bottom = img_size[1] - 1
+                    if round(bottom) >= img_size[1] - 1:
+                        bottom = img_size[1] - 2
                     right = left + w
-                    if round(right) >= img_size[0]:
-                        right = img_size[0] - 1
+                    if round(right) >= img_size[0] - 1:
+                        right = img_size[0] - 2
                     if left < 0:
                         left = 0
                     if top < 0:
