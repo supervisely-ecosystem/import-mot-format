@@ -7,7 +7,6 @@ from collections import defaultdict
 from supervisely_lib.io.fs import download, file_exists, get_file_name
 
 
-
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
@@ -165,6 +164,9 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                             left = 0
                         if top < 0:
                             top = 0
+                        if right <= 0 or bottom <= 0 or left >= img_size[0] or top >= img_size[1]:
+                            continue
+
                         geom = sly.Rectangle(top, left, bottom, right)
                         figure = sly.VideoFigure(ids_to_video_object[idx], geom, image_id - 1)
                         new_figures.append(figure)
