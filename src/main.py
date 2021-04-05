@@ -12,9 +12,11 @@ TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
 INPUT_FOLDER = "/mot_format/"
 
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', \
-            'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+
+ARH_NAMES = ['MOT20.zip']
+LINKS = ['https://motchallenge.net/data/MOT20.zip']
 
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
@@ -175,9 +177,12 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
                 video.release()
                 file_info = api.video.upload_paths(new_dataset.id, [video_name], [video_path])
+                logger.info('Upload video {}'.format(file_info))
                 new_frames_collection = sly.FrameCollection(new_frames)
                 new_objects = sly.VideoObjectCollection(ids_to_video_object.values())
+                logger.info('Objects_json {}'.format(new_objects.to_json()))
                 ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects, frames=new_frames_collection)
+                logger.info('Ann_json {}'.format(ann.to_json()))
                 api.video.annotation.append(file_info[0].id, ann)
         clean_dir(storage_dir)
     my_app.stop()
