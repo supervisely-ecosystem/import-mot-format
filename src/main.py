@@ -4,7 +4,7 @@ import cv2
 import supervisely_lib as sly
 from supervisely_lib.annotation.tag_meta import TagValueType
 from collections import defaultdict
-from supervisely_lib.io.fs import download, file_exists, get_file_name
+from supervisely_lib.io.fs import download, file_exists, get_file_name, clean_dir
 
 
 my_app = sly.AppService()
@@ -179,6 +179,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 new_objects = sly.VideoObjectCollection(ids_to_video_object.values())
                 ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects, frames=new_frames_collection)
                 api.video.annotation.append(file_info[0].id, ann)
+        clean_dir(storage_dir)
     my_app.stop()
 
 
