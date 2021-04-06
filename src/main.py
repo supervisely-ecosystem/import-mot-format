@@ -10,7 +10,7 @@ from supervisely_lib.io.fs import download, file_exists, get_file_name, dir_exis
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-INPUT_FOLDER = "mot_format"
+#INPUT_FOLDER = "mot_format"
 
 ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
 LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
@@ -99,15 +99,10 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
-        logger.info('teeeeeeeeest: {}'.format(os.path.join(storage_dir, INPUT_FOLDER)))
-        if dir_exists(os.path.join(storage_dir, INPUT_FOLDER)):
-            #cur_files_path = INPUT_FOLDER + ARH_NAME
-            archive_path = os.path.join(storage_dir, INPUT_FOLDER, ARH_NAME)
-        else:
-            raise ValueError('Input folder not exist')
+        archive_path = os.path.join(storage_dir, ARH_NAME)
 
-        logger.info('Download archive')
         if not file_exists(archive_path):
+            logger.info('Download archive {}'.format(ARH_NAME))
             download(LINK, archive_path)
         #api.file.download(TEAM_ID, cur_files_path, archive_path)
         if zipfile.is_zipfile(archive_path):
@@ -118,7 +113,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             raise Exception("No such file {}".format(ARH_NAME))
 
         logger.info('Check input mot format')
-        curr_mot_dir = os.path.join(storage_dir, INPUT_FOLDER, get_file_name(ARH_NAME))
+        curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
         check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
