@@ -4,13 +4,13 @@ import cv2
 import supervisely_lib as sly
 from supervisely_lib.annotation.tag_meta import TagValueType
 from collections import defaultdict
-from supervisely_lib.io.fs import download, file_exists, get_file_name, clean_dir
+from supervisely_lib.io.fs import download, file_exists, get_file_name, dir_exists #clean_dir
 
 
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-INPUT_FOLDER = "/mot_format/"
+INPUT_FOLDER = "mot_format"
 
 ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
 LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
@@ -99,9 +99,9 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
-        if INPUT_FOLDER:
+        if dir_exists(os.path.join(storage_dir, INPUT_FOLDER)):
             #cur_files_path = INPUT_FOLDER + ARH_NAME
-            archive_path = os.path.join(storage_dir, ARH_NAME)
+            archive_path = os.path.join(storage_dir, INPUT_FOLDER, ARH_NAME)
         else:
             raise ValueError('Input folder not exist')
 
@@ -117,15 +117,16 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             raise Exception("No such file {}".format(ARH_NAME))
 
         logger.info('Check input mot format')
-        check_mot_format(storage_dir)
+        curr_mot_dir = os.path.join(storage_dir, INPUT_FOLDER, get_file_name(ARH_NAME))
+        check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
         new_dataset = api.dataset.create(new_project.id, dataset_name, change_name_if_conflict=True)
-        for r, d, f in os.walk(storage_dir):
+        for r, d, f in os.walk(curr_mot_dir):
             if mot_bbox_file_name in f:
                 video_name = r.split('/')[-2] + video_ext
                 logger.info('Video {} being processed'.format(video_name))
-                video_path = os.path.join(storage_dir, video_name)
+                video_path = os.path.join(curr_mot_dir, video_name)
                 imgs_path = r[:-2] + 'img1'
                 images = os.listdir(imgs_path)
                 images_ext = images[0].split('.')[1]
@@ -178,7 +179,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 new_objects = sly.VideoObjectCollection(ids_to_video_object.values())
                 ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects, frames=new_frames_collection)
                 api.video.annotation.append(file_info[0].id, ann)
-        clean_dir(storage_dir)
+        #clean_dir(storage_dir)
     my_app.stop()
 
 
