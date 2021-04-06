@@ -99,6 +99,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
+        logger.info('teeeeeeeeest: {}'.format(os.path.join(storage_dir, INPUT_FOLDER)))
         if dir_exists(os.path.join(storage_dir, INPUT_FOLDER)):
             #cur_files_path = INPUT_FOLDER + ARH_NAME
             archive_path = os.path.join(storage_dir, INPUT_FOLDER, ARH_NAME)
