@@ -113,7 +113,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             raise Exception("No such file {}".format(ARH_NAME))
 
         logger.info('Check input mot format')
-        if get_file_name(ARH_NAME) in ['MOT16', 'MOT17']:
+        if get_file_name(ARH_NAME) in ['MOT16']:
             remove_dir(os.path.join(storage_dir, 'test'))
             curr_mot_dir = os.path.join(storage_dir, 'train')
         else:
