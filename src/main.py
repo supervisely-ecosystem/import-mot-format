@@ -114,6 +114,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
         logger.info('Check input mot format')
         curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+        logger.info('teeeest: {}'.format(curr_mot_dir))
         check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
