@@ -10,6 +10,7 @@ from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_d
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
+INPUT_FOLDER = os.environ.get("modal.state.slyFolder")
 #INPUT_FOLDER = "mot_format"
 
 ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
@@ -99,7 +100,8 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
-        archive_path = os.path.join(storage_dir, ARH_NAME)
+        archive_path = os.path.join(storage_dir, INPUT_FOLDER, ARH_NAME)
+        logger.info('Archive path: {}'.format(archive_path))
 
         if not file_exists(archive_path):
             logger.info('Download archive {}'.format(ARH_NAME))
@@ -117,7 +119,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             remove_dir(os.path.join(storage_dir, 'test'))
             curr_mot_dir = os.path.join(storage_dir, 'train')
         else:
-            curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+            curr_mot_dir = os.path.join(storage_dir, INPUT_FOLDER, get_file_name(ARH_NAME))
         check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
