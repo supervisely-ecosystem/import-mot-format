@@ -2,7 +2,6 @@ import os
 import zipfile
 import cv2
 import supervisely_lib as sly
-from supervisely_lib.annotation.tag_meta import TagValueType
 from collections import defaultdict
 from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_dir
 
@@ -10,12 +9,9 @@ from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_d
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-#INPUT_FOLDER = "mot_format"
+ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
 
-#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
-ARH_NAMES = ['MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
 video_ext = '.mp4'
@@ -184,7 +180,6 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 logger.info('Create annotation for video {}'.format(video_name))
                 api.video.annotation.append(file_info[0].id, ann)
         remove_dir(curr_mot_dir)
-        #clean_dir(storage_dir)
     my_app.stop()
 
 
