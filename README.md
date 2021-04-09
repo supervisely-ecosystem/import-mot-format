@@ -21,33 +21,9 @@
 
 ## Overview
 
-Transform images project in Supervisely ([link to format](https://docs.supervise.ly/data-organization/00_ann_format_navi)) to [Cityscapes](https://github.com/mcordts/cityscapesScripts) and prepares downloadable `tar` archive.
+App download archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/). All sequences have been annotated with high accuracy, strictly following a well-defined protocol. Then the archives are extracted and converted to the Supervisely ([link to format](https://docs.supervise.ly/data-organization/00_ann_format_navi)). We use for convertation MOT15, MOT16, MOT17 and MOT20 datasets. You do not need to download, unpack or perform any actions with the original data. All actions are performed automatically by pressing one button. After execution application, a project named `mot_video` will be created in your workspace, containing 4 datasets. New Supervisely project will contain only classes with shape `Rectangle`.
 
-Supervisely project have to contain only classes with shape `Polygon` or `Bitmap`. It means that all labeled objects have to be polygons or bitmaps. If your project has classes with other shapes and you would like to convert the shapes of these classes and all corresponding objects (e.g. rectangles to polygons), we recommend you to use [`Convert Class Shape`](https://ecosystem.supervise.ly/apps/convert-class-shape) app. 
 
-**It's important that labeled foreground objects must never have holes, i.e. if there is some background visible ‘through’ some foreground object, it is considered to be part of the foreground.**
-
-The folder structure of the Cityscapes dataset is as follows:
-
-`{root}/{type}{video}/{split}/{city}/{city}_{seq:0>6}_{frame:0>6}_{type}{ext}`
-
-The meaning of the individual elements is:
-
-- `root` the root folder of the Cityscapes dataset.
-
-- `type` the type/modality of data, e.g. gtFine for fine ground truth, or leftImg8bit for left 8-bit images.
-
-- `split` the split, i.e. `train/val/test/train_extra`. Note that not all kinds of data exist for all splits. Thus, do not be surprised to occasionally find empty folders.
-
-- `city` the city in which this part of the dataset was recorded. In supervisely project `city`is used as a dataset name.
-
-You can download example of Cityscapes datasets [here](https://www.cityscapes-dataset.com/)
-
-Current version of application supports only:
-`gtFine` the fine annotations. This type of annotations is used for validation, testing, and optionally for training. Annotations are encoded using json files containing the individual polygons.
-`leftImg8bit` the left images in 8-bit LDR format. These are the standard annotated images.
-
-In addition, Cityscapes format implies the presence of train/val datasets, and also train/val/test/train_extra. Thus, to split images on training and validation datasets you should assign  corresponding tags (`train`, `val`, `test`, `train_extra`) to images. If image doesn't have such tags, tags `train` and `val` will be assigned automatically, and user can define which percent of all images in project will be tagged as `train`, and the rest images will be tagged as `val`.
 
 ## How To Run 
 **Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervise.ly/apps/convert-supervisely-to-cityscapes-format) if it is not there.

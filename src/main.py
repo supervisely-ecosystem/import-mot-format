@@ -130,6 +130,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 video_path = os.path.join(curr_mot_dir, video_name)
                 imgs_path = r[:-2] + 'img1'
                 images = os.listdir(imgs_path)
+                progress = sly.Progress('Create video and figures for frame', len(images), app_logger)
                 images_ext = images[0].split('.')[1]
                 seqinfo_path = r[:-2] + seqinfo_file_name
                 frames_with_objects = get_frames_with_objects_gt(os.path.join(r, mot_bbox_file_name))
@@ -173,12 +174,14 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                         new_figures.append(figure)
                     new_frame = sly.Frame(image_id - 1, new_figures)
                     new_frames.append(new_frame)
+                    progress.iter_done_report()
 
                 video.release()
                 file_info = api.video.upload_paths(new_dataset.id, [video_name], [video_path])
                 new_frames_collection = sly.FrameCollection(new_frames)
                 new_objects = sly.VideoObjectCollection(ids_to_video_object.values())
                 ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects, frames=new_frames_collection)
+                logger.info('Create annotation for video {}'.format(video_name))
                 api.video.annotation.append(file_info[0].id, ann)
         remove_dir(curr_mot_dir)
         #clean_dir(storage_dir)
