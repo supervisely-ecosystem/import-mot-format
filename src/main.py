@@ -12,9 +12,10 @@ TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
 #INPUT_FOLDER = "mot_format"
 
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
-
+#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+ARH_NAMES = ['MOT20.zip']
+LINKS = ['https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
 video_ext = '.mp4'
@@ -101,16 +102,16 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
         archive_path = os.path.join(storage_dir, ARH_NAME)
 
-        if not file_exists(archive_path):
-            logger.info('Download archive {}'.format(ARH_NAME))
-            download(LINK, archive_path)
+        #if not file_exists(archive_path):
+            #logger.info('Download archive {}'.format(ARH_NAME))
+            #download(LINK, archive_path)
         #api.file.download(TEAM_ID, cur_files_path, archive_path)
-        if zipfile.is_zipfile(archive_path):
-            logger.info('Extract archive {}'.format(ARH_NAME))
-            with zipfile.ZipFile(archive_path, 'r') as zip_ref:
-                zip_ref.extractall(storage_dir)
-        else:
-            raise Exception("No such file {}".format(ARH_NAME))
+        #if zipfile.is_zipfile(archive_path):
+            #logger.info('Extract archive {}'.format(ARH_NAME))
+            #with zipfile.ZipFile(archive_path, 'r') as zip_ref:
+                #zip_ref.extractall(storage_dir)
+        #else:
+            #raise Exception("No such file {}".format(ARH_NAME))
 
         logger.info('Check input mot format')
         if get_file_name(ARH_NAME) in ['MOT16']:
