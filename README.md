@@ -21,7 +21,7 @@
 
 ## Overview
 
-App download archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/). All sequences have been annotated with high accuracy, strictly following a well-defined protocol. Then the archives are extracted and converted to the Supervisely ([link to format](https://docs.supervise.ly/data-organization/00_ann_format_navi)). We use for convertation MOT15, MOT16, MOT17 and MOT20 datasets. You do not need to download, unpack or perform any actions with the original data. All actions are performed automatically by pressing one button. After execution application, a project named `mot_video` will be created in your workspace, containing 4 datasets. New Supervisely project will contain only classes with shape `Rectangle`.
+App download archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/). All sequences have been annotated with high accuracy, strictly following a well-defined protocol. Then the archives are extracted and converted to the Supervisely ([link to format](https://docs.supervise.ly/data-organization/00_ann_format_navi)). We use for convertation MOT15, MOT16, MOT17 and MOT20 datasets. You do not need to download, unpack or perform any actions with the original data. All actions are performed automatically by pressing one button. After execution application, a project named `mot_video` will be created in your workspace, containing 4 datasets. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`.
 
 
 
