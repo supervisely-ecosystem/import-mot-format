@@ -9,9 +9,10 @@ from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_d
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
-
+#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+ARH_NAMES = ['MOT15.zip']
+LINKS = ['https://motchallenge.net/data/MOT15.zip']
 obj_class_name = 'pedestrian'
 project_name = 'mot_video'
 video_ext = '.mp4'
@@ -89,10 +90,10 @@ def img_size_from_seqini(txt_path):
 @sly.timeit
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
     storage_dir = my_app.data_dir
-    new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS, change_name_if_conflict=True)
-    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
-    meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]))
-    api.project.update_meta(new_project.id, meta.to_json())
+    #new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS, change_name_if_conflict=True)
+    #obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+    #meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]))
+   # api.project.update_meta(new_project.id, meta.to_json())
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
