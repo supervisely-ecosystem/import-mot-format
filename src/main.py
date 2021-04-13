@@ -12,8 +12,8 @@ from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollec
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip']
+ARH_NAMES = ['MOT16.zip', 'MOT17.zip']
+LINKS = ['https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip']
 #ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
 #LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
@@ -59,7 +59,7 @@ def get_frames_with_objects_gt(txt_path):
     with open(txt_path, "r") as file:
         all_lines = file.readlines()
         for line in all_lines:
-            line = line.split('\n')[0].split(',')[:-3]
+            line = line.split('\n')[0].split(',')[:8]
             if len(line) == 0:
                 continue
             line = list(map(lambda x: round(float(x)), line))
