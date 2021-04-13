@@ -12,10 +12,12 @@ from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollec
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip']
+LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip']
+#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
-conf_tag_name = 'conf_tag'
+conf_tag_name = 'ignore_conf'
 project_name = 'mot_video'
 video_ext = '.mp4'
 mot_bbox_file_name = 'gt.txt'
