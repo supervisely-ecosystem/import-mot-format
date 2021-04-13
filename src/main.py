@@ -161,7 +161,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                         if idx not in ids_to_video_object.keys():
                             conf_tag = VideoTag(conf_tag_meta, frame_range=tags_to_video_objs[idx])
                             ids_to_video_object[idx] = sly.VideoObject(obj_class, tags=VideoTagCollection([conf_tag]))
-                        left, top, w, h, conf_tag = coords
+                        left, top, w, h = coords
                         bottom = top + h
                         if round(bottom) >= img_size[1] - 1:
                             bottom = img_size[1] - 2
