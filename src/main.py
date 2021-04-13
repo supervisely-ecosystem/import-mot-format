@@ -54,7 +54,7 @@ def check_mot_format(input_dir):
 
 
 def get_frames_with_objects_gt(txt_path):
-    tags_to_video_objs = defaultdict(list)
+    frames_without_objs_conf = defaultdict(list)
     frame_to_objects = defaultdict(lambda: defaultdict(list))
     with open(txt_path, "r") as file:
         all_lines = file.readlines()
@@ -66,8 +66,14 @@ def get_frames_with_objects_gt(txt_path):
             line = list(map(int, line))
             frame_to_objects[line[0]][line[1]].extend(line[2:6])
             if line[6] == 0:
-                tags_to_video_objs[line[1]].append(line[0])
-    return frame_to_objects, tags_to_video_objs
+                if len(frames_without_objs_conf[line[1]]) == 0:
+                    frames_without_objs_conf[line[1]].append([line[0], line[0]])
+                elif frames_without_objs_conf[line[1]][-1][1] + 1 == line[0]:
+                    frames_without_objs_conf[line[1]][-1][1] = line[0]
+                else:
+                    frames_without_objs_conf[line[1]].append([line[0], line[0]])
+
+    return frame_to_objects, frames_without_objs_conf
 
 
 def get_frames_with_objects_det(txt_path):
@@ -138,7 +144,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 progress = sly.Progress('Create video and figures for frame', len(images), app_logger)
                 images_ext = images[0].split('.')[1]
                 seqinfo_path = r[:-2] + seqinfo_file_name
-                frames_with_objects, tags_to_video_objs = get_frames_with_objects_gt(os.path.join(r, mot_bbox_file_name))
+                frames_with_objects, frames_without_objs_conf = get_frames_with_objects_gt(os.path.join(r, mot_bbox_file_name))
                 if os.path.isfile(seqinfo_path):
                     img_size, frame_rate = img_size_from_seqini(seqinfo_path)
                 else:
@@ -159,8 +165,12 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                     frame_object_coords = frames_with_objects[image_id]
                     for idx, coords in frame_object_coords.items():
                         if idx not in ids_to_video_object.keys():
-                            conf_tag = VideoTag(conf_tag_meta, frame_range=tags_to_video_objs[idx])
-                            ids_to_video_object[idx] = sly.VideoObject(obj_class, tags=VideoTagCollection([conf_tag]))
+                            curr_frame_ranges = frames_without_objs_conf[idx]
+                            if len(curr_frame_ranges) == 0:
+                                ids_to_video_object[idx] = sly.VideoObject(obj_class)
+                            else:
+                                conf_tags = [VideoTag(conf_tag_meta, frame_range=[curr_frame_range[0]-1, curr_frame_range[1]-1]) for curr_frame_range in curr_frame_ranges]
+                                ids_to_video_object[idx] = sly.VideoObject(obj_class, tags=VideoTagCollection(conf_tags))
                         left, top, w, h = coords
                         bottom = top + h
                         if round(bottom) >= img_size[1] - 1:
