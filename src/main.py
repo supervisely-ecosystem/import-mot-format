@@ -3,7 +3,10 @@ import zipfile
 import cv2
 import supervisely_lib as sly
 from collections import defaultdict
+from supervisely_lib.annotation.tag_meta import TagValueType
 from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_dir
+from supervisely_lib.video_annotation.video_tag import VideoTag
+from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
 
 
 my_app = sly.AppService()
@@ -14,6 +17,7 @@ WORKSPACE_ID = int(os.environ['context.workspaceId'])
 ARH_NAMES = ['MOT15.zip']
 LINKS = ['https://motchallenge.net/data/MOT15.zip']
 obj_class_name = 'pedestrian'
+conf_tag_name = 'conf_tag'
 project_name = 'mot_video'
 video_ext = '.mp4'
 mot_bbox_file_name = 'gt.txt'
@@ -50,6 +54,7 @@ def check_mot_format(input_dir):
 
 
 def get_frames_with_objects_gt(txt_path):
+    tags_to_video_objs = defaultdict(list)
     frame_to_objects = defaultdict(lambda: defaultdict(list))
     with open(txt_path, "r") as file:
         all_lines = file.readlines()
@@ -60,7 +65,9 @@ def get_frames_with_objects_gt(txt_path):
             line = list(map(lambda x: round(float(x)), line))
             line = list(map(int, line))
             frame_to_objects[line[0]][line[1]].extend(line[2:6])
-    return frame_to_objects
+            if line[6] == 0:
+                tags_to_video_objs[line[1]].append(line[0])
+    return frame_to_objects, tags_to_video_objs
 
 
 def get_frames_with_objects_det(txt_path):
@@ -90,10 +97,11 @@ def img_size_from_seqini(txt_path):
 @sly.timeit
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
     storage_dir = my_app.data_dir
-    #new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS, change_name_if_conflict=True)
-    #obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
-    #meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]))
-   # api.project.update_meta(new_project.id, meta.to_json())
+    new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS, change_name_if_conflict=True)
+    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+    conf_tag_meta = sly.TagMeta(conf_tag_name, TagValueType.NONE)
+    meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]), sly.TagMetaCollection([conf_tag_meta]))
+    api.project.update_meta(new_project.id, meta.to_json())
 
     for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
 
@@ -130,7 +138,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 progress = sly.Progress('Create video and figures for frame', len(images), app_logger)
                 images_ext = images[0].split('.')[1]
                 seqinfo_path = r[:-2] + seqinfo_file_name
-                frames_with_objects = get_frames_with_objects_gt(os.path.join(r, mot_bbox_file_name))
+                frames_with_objects, tags_to_video_objs = get_frames_with_objects_gt(os.path.join(r, mot_bbox_file_name))
                 if os.path.isfile(seqinfo_path):
                     img_size, frame_rate = img_size_from_seqini(seqinfo_path)
                 else:
@@ -151,8 +159,9 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                     frame_object_coords = frames_with_objects[image_id]
                     for idx, coords in frame_object_coords.items():
                         if idx not in ids_to_video_object.keys():
-                            ids_to_video_object[idx] = sly.VideoObject(obj_class)
-                        left, top, w, h = coords
+                            conf_tag = VideoTag(conf_tag_meta, frame_range=tags_to_video_objs[idx])
+                            ids_to_video_object[idx] = sly.VideoObject(obj_class, tags=VideoTagCollection([conf_tag]))
+                        left, top, w, h, conf_tag = coords
                         bottom = top + h
                         if round(bottom) >= img_size[1] - 1:
                             bottom = img_size[1] - 2
