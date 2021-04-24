@@ -35,4 +35,4 @@ App download archives with video sequences in unconstrained environments from [M
 ## How to use
 Result project is saved your current `Workspace` with name `mot_video`.
 
-<img src="https://i.imgur.com/gcP4ZDP.png" width="1500px"/>
+<img src="https://i.imgur.com/gcP4ZDP.png" width="1187px"/>
