@@ -33,6 +33,6 @@ App download archives with video sequences in unconstrained environments from [M
 
 
 ## How to use
-After running the application, you will be redirected to the Tasks page. Once application processing has finished, app creates new project and it will appear in `Output` section. 
+Result project is saved your current `Workspace` with name `mot_video`.
 
-<img src="https://i.imgur.com/4AB2hgH.png"/>
+<img src="https://i.imgur.com/gcP4ZDP.png" width="1500px"/>
