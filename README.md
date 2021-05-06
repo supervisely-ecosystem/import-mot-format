@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/O0c9qn3.png" width="1500px"/>
 
 
-# From MOTChallenge to Supervisely format
+# Import MOTChallenge
 
 
 <p align="center">
@@ -25,11 +25,11 @@ App download archives with video sequences in unconstrained environments from [M
 
 
 ## How To Run 
-**Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervise.ly/apps/convert-supervisely-to-cityscapes-format) if it is not there.
+**Step 1**: Add app to your team from [Ecosystem](https://ecosystem.supervise.ly/apps) if it is not there.
 
 **Step 2**: Open `Plugins & Apps` -> `import-mot-format` -> `Run` 
 
-<img src="https://i.imgur.com/IxT4Xhd.png"/>
+<img src="https://i.imgur.com/CMZuAxq.png"/>
 
 
 ## How to use
