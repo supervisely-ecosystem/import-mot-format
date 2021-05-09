@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/O0c9qn3.png" width="1500px"/>
+<img src="https://i.imgur.com/q90b5u4.png" width="1200px"/>
 
 
 # Import MOTChallenge
@@ -12,7 +12,7 @@
 </p>
 [![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/import-mot-format)
-[![views](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/import-mot-format(https://github.com/supervisely-ecosystem/import-mot-format)&counter=views&label=views)](https://supervise.ly)
+[![views](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/import-mot-format&counter=views&label=views)](https://supervise.ly)
 [![used by teams](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/import-mot-format&counter=downloads&label=used%20by%20teams)](https://supervise.ly)
 [![runs](https://app.supervise.ly/public/api/v3/ecosystem.counters?repo=supervisely-ecosystem/import-mot-format&counter=runs&label=runs&123)](https://supervise.ly)
 
@@ -29,10 +29,10 @@ App download archives with video sequences in unconstrained environments from [M
 
 **Step 2**: Open `Plugins & Apps` -> `import-mot-format` -> `Run` 
 
-<img src="https://i.imgur.com/CMZuAxq.png"/>
+<img src="https://i.imgur.com/FVrbqSn.png"/>
 
 
 ## How to use
 Result project is saved your current `Workspace` with name `mot_video`.
 
-<img src="https://i.imgur.com/ykCjBwF.png"/>
+<img src="https://i.imgur.com/b0hafY5.png"/>
