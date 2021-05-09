@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/q90b5u4.png" width="1200px"/>
+<img src="https://i.imgur.com/q90b5u4.png"/>
 
 
 # Import MOTChallenge
