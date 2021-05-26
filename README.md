@@ -36,6 +36,6 @@ App downloads archives with video sequences in unconstrained environments from [
 
 
 ## How to use
-Result project is saved your current `Workspace` with name `mot_video`.
+Result project will be saved in your current `Workspace` with name `mot_video`.
 
 <img src="https://i.imgur.com/b0hafY5.png"/>
