@@ -26,6 +26,7 @@ input_archive_ext = '.zip'
 
 mot_dataset = os.environ['modal.state.mot_dataset']
 logger.warn('ALEX TEST: {}'.format(mot_dataset))
+
 if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
    ARH_NAMES = [os.path.basename(ds_path)]
