@@ -36,7 +36,9 @@ if mot_dataset == 'custom':
    logger.warn('ALEX TEST ds_path: {}'.format(ds_path))
 else:
     mot_ds_names = os.environ['modal.state.currDatasets']
+    logger.warn('ALEX TEST mot_ds_names: {}'.format(mot_ds_names))
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
+    logger.warn('ALEX TEST ARH_NAMES: {}'.format(ARH_NAMES))
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
     logger.warn('ALEX TEST curr_datasets: {}'.format(LINKS))
 
