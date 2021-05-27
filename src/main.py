@@ -7,14 +7,11 @@ from supervisely_lib.annotation.tag_meta import TagValueType
 from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_dir
 from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
-from distutils import util
 
 
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
 conf_tag_name = 'ignore_conf'
 project_name = 'mot_video'
@@ -44,8 +41,6 @@ else:
     logger.warn('ALEX TEST ARH_NAMES: {}'.format(ARH_NAMES))
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
     logger.warn('ALEX TEST curr_datasets: {}'.format(LINKS))
-
-# /mot_format/mot_import.zip
 
 
 def check_mot_format(input_dir):
