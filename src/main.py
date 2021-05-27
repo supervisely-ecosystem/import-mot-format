@@ -27,10 +27,6 @@ logger = sly.logger
 link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 
-a = "['mot15', 'mot20']"
-b = a.replace('\'', '')
-c = b[1:-1].split(',')
-
 mot_dataset = os.environ['modal.state.mot_dataset']
 logger.warn('ALEX TEST: {}'.format(mot_dataset))
 if mot_dataset == 'custom':
@@ -49,7 +45,7 @@ else:
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
     logger.warn('ALEX TEST curr_datasets: {}'.format(LINKS))
 
-# /import_cityscapes/77777.tar
+# /mot_format/mot_import.zip
 
 
 def check_mot_format(input_dir):
@@ -124,7 +120,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
         archive_path = os.path.join(storage_dir, ARH_NAME)
 
-        if mot_ds_names:
+        if LINKS[0]:
             if not file_exists(archive_path):
                 logger.info('Download archive {}'.format(ARH_NAME))
                 download(LINK, archive_path)
