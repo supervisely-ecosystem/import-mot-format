@@ -32,7 +32,7 @@ if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
    logger.warn('ALEX TEST ds_path: {}'.format(ds_path))
 else:
-    mot = os.environ['modal.state.curr_datasets']
+    mot = os.environ['modal.state.currDatasets']
     logger.warn('ALEX TEST curr_datasets: {}'.format(mot))
 q = 5/0
 # 78.46.75.100:38585/files/13978
