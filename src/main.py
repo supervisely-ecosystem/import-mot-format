@@ -41,6 +41,7 @@ if mot_dataset == 'custom':
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
     mot_ds_names = mot_ds_names_str.replace('\'', '')
+    mot_ds_names = mot_ds_names.replace(' ', '')
     mot_ds_names = mot_ds_names[1:-1].split(',')
     logger.warn('ALEX TEST mot_ds_names: {}'.format(mot_ds_names))
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
