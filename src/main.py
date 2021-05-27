@@ -7,6 +7,7 @@ from supervisely_lib.annotation.tag_meta import TagValueType
 from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_dir
 from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
+from distutils import util
 
 
 my_app = sly.AppService()
@@ -23,6 +24,11 @@ seqinfo_file_name = 'seqinfo.ini'
 frame_rate_default = 25
 image_name_length = 6
 logger = sly.logger
+
+
+a = os.environ['modal.state.mot_dataset']
+logger.warn('ALEX TEST {}'.format(a))
+q = 5/0
 
 
 def check_mot_format(input_dir):
