@@ -23,7 +23,28 @@
 
 ## Overview
 
-App downloads archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/). All sequences have been annotated with high accuracy, strictly following a well-defined protocol. Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets. You do not need to download, unpack or perform any actions with the original data. All actions are performed automatically by pressing one button. After application execution, a project named `mot_video` will be created in your workspace, containing 4 datasets. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`. Also new project will contain `None` type tag with name `ignore_conf`. This tag indicates that you do not need to take the figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
+App downloads archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/) or from your prepared archive. Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). 
+
+Folder structure of the MOT dataset is as follows:
+
+```python
+{root.zip}/{dataset_name}/{train}/{video_name}/{gt}_{img1}_{seqinfo.ini}   
+```
+
+The meaning of the individual elements is:
+
+- `root` root archive of the MOT dataset.
+- `dataset_name` name of dataset in created project.
+- `video_name` name of video in created dataset.
+- `gt` folder with CSV text-file (gt.txt), containing one object instance per line. Each line contain 10 values. More about MOT format value you can read  [here](https://motchallenge.net/instructions/).
+- `img1` folder with images the video consists of.
+- `seqinfo.ini` file with images and video information.
+
+You can download example of MOT datasets [here](https://motchallenge.net/data/MOT15/).
+
+Current version of application supports only `gt` file annotations.
+
+After application execution, a project named `mot_video` will be created in your workspace. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`. Also new project will contain `None` type tag with name `ignore_conf`. This tag indicates that you do not need to take the figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
 
 
 
@@ -34,8 +55,20 @@ App downloads archives with video sequences in unconstrained environments from [
 
 <img src="https://i.imgur.com/FVrbqSn.png"/>
 
+**Step 3**: Select datasets import mode.
+
+Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
+
+<img src="https://i.imgur.com/1xMaj3y.png" width="600px"/>
+
+Or by path link on your archive in `Files` page.
+
+<img src="https://i.imgur.com/8U0fP2U.png" width="600px"/>
+
+
 
 ## How to use
+
 Result project will be saved in your current `Workspace` with name `mot_video`.
 
 <img src="https://i.imgur.com/b0hafY5.png"/>

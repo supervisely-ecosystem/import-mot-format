@@ -25,7 +25,6 @@ link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 
 mot_dataset = os.environ['modal.state.motDataset']
-logger.warn('ALEX TEST: {}'.format(mot_dataset))
 
 if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
