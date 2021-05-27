@@ -26,10 +26,13 @@ image_name_length = 6
 logger = sly.logger
 
 
-a = os.environ['modal.state.mot_dataset']
-logger.warn('ALEX TEST {}'.format(a))
+mot_dataset = os.environ['modal.state.mot_dataset']
+logger.warn('ALEX TEST: {}'.format(mot_dataset))
+if mot_dataset == 'custom':
+   ds_path  = os.environ['modal.state.dsPath']
+   logger.warn('ALEX TEST ds_path: {}'.format(ds_path))
 q = 5/0
-
+# 78.46.75.100:38585/files/13978
 
 def check_mot_format(input_dir):
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
