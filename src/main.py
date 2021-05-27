@@ -24,24 +24,20 @@ logger = sly.logger
 link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 
-mot_dataset = os.environ['modal.state.mot_dataset']
+mot_dataset = os.environ['modal.state.motDataset']
 logger.warn('ALEX TEST: {}'.format(mot_dataset))
 
 if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
    ARH_NAMES = [os.path.basename(ds_path)]
    LINKS = [None]
-   logger.warn('ALEX TEST ds_path: {}'.format(ds_path))
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
     mot_ds_names = mot_ds_names_str.replace('\'', '')
     mot_ds_names = mot_ds_names.replace(' ', '')
     mot_ds_names = mot_ds_names[1:-1].split(',')
-    logger.warn('ALEX TEST mot_ds_names: {}'.format(mot_ds_names))
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
-    logger.warn('ALEX TEST ARH_NAMES: {}'.format(ARH_NAMES))
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
-    logger.warn('ALEX TEST curr_datasets: {}'.format(LINKS))
 
 
 def check_mot_format(input_dir):
