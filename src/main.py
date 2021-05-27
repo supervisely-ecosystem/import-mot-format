@@ -13,8 +13,8 @@ from distutils import util
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
-ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
-LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
+#ARH_NAMES = ['MOT15.zip', 'MOT16.zip', 'MOT17.zip', 'MOT20.zip']
+#LINKS = ['https://motchallenge.net/data/MOT15.zip', 'https://motchallenge.net/data/MOT16.zip', 'https://motchallenge.net/data/MOT17.zip', 'https://motchallenge.net/data/MOT20.zip']
 obj_class_name = 'pedestrian'
 conf_tag_name = 'ignore_conf'
 project_name = 'mot_video'
@@ -24,18 +24,24 @@ seqinfo_file_name = 'seqinfo.ini'
 frame_rate_default = 25
 image_name_length = 6
 logger = sly.logger
-
+link_path = 'https://motchallenge.net/data/'
+input_archive_ext = '.zip'
 
 mot_dataset = os.environ['modal.state.mot_dataset']
 logger.warn('ALEX TEST: {}'.format(mot_dataset))
 if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
+   ARH_NAMES = [os.path.basename(ds_path)]
+   LINKS = [None]
    logger.warn('ALEX TEST ds_path: {}'.format(ds_path))
 else:
-    mot = os.environ['modal.state.currDatasets']
-    logger.warn('ALEX TEST curr_datasets: {}'.format(mot))
-q = 5/0
-# 78.46.75.100:38585/files/13978
+    mot_ds_names = os.environ['modal.state.currDatasets']
+    ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
+    LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
+    logger.warn('ALEX TEST curr_datasets: {}'.format(LINKS))
+
+# /import_cityscapes/77777.tar
+
 
 def check_mot_format(input_dir):
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
@@ -86,20 +92,6 @@ def get_frames_with_objects_gt(txt_path):
     return frame_to_objects, frames_without_objs_conf
 
 
-def get_frames_with_objects_det(txt_path):
-    frame_to_objects = defaultdict(list)
-    with open(txt_path, "r") as file:
-        all_lines = file.readlines()
-        for line in all_lines:
-            line = line.split('\n')[0].split(',')[:-4]
-            if len(line) == 0:
-                continue
-            line = list(map(lambda x: round(float(x)), line))
-            line = list(map(int, line))
-            frame_to_objects[line[0]].extend([line[2:6]])
-    return frame_to_objects
-
-
 def img_size_from_seqini(txt_path):
     with open(txt_path, "r") as file:
         all_lines = file.readlines()
@@ -123,10 +115,13 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
         archive_path = os.path.join(storage_dir, ARH_NAME)
 
-        if not file_exists(archive_path):
-            logger.info('Download archive {}'.format(ARH_NAME))
-            download(LINK, archive_path)
-        #api.file.download(TEAM_ID, cur_files_path, archive_path)
+        if mot_ds_names:
+            if not file_exists(archive_path):
+                logger.info('Download archive {}'.format(ARH_NAME))
+                download(LINK, archive_path)
+        else:
+            api.file.download(TEAM_ID, ds_path, archive_path)
+
         if zipfile.is_zipfile(archive_path):
             logger.info('Extract archive {}'.format(ARH_NAME))
             with zipfile.ZipFile(archive_path, 'r') as zip_ref:
@@ -213,19 +208,15 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
     my_app.stop()
 
 
-
 def main():
     sly.logger.info("Script arguments", extra={
         "TEAM_ID": TEAM_ID,
         "WORKSPACE_ID": WORKSPACE_ID
     })
-
-    # Run application service
     my_app.run(initial_events=[{"command": "import_mot_format"}])
 
 
-
 if __name__ == '__main__':
-        sly.main_wrapper("main", main)
+    sly.main_wrapper("main", main)
 
 
