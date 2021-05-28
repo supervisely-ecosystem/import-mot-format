@@ -40,7 +40,7 @@ The meaning of the individual elements is:
 - `img1` folder with images the video consists of.
 - `seqinfo.ini` file with images and video information.
 
-You can download example of MOT datasets [here](https://motchallenge.net/data/MOT15/).
+You can download example of MOT dataset [here](https://motchallenge.net/data/MOT15/).
 
 Current version of application supports only `gt` file annotations.
 
