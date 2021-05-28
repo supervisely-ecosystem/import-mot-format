@@ -59,11 +59,11 @@ After application execution, a project named `mot_video` will be created in your
 
 Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
 
-<img src="https://i.imgur.com/1xMaj3y.png" width="600px"/>
+<img src="https://i.imgur.com/cA0ldX2.png" width="600px"/>
 
 Or by path link on your archive in `Files` page.
 
-<img src="https://i.imgur.com/8U0fP2U.png" width="600px"/>
+<img src="https://i.imgur.com/5VvVkOu.png" width="600px"/>
 
 
 
