@@ -23,7 +23,7 @@
 
 ## Overview
 
-App downloads archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/) or from your prepared archive. Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). 
+App downloads archives with video sequences from [MOTChallenge](https://motchallenge.net/) or from your prepared archive/s (which should be located in `Team Files`). Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). 
 
 Folder structure of the MOT dataset is as follows:
 
