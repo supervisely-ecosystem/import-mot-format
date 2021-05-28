@@ -23,12 +23,12 @@
 
 ## Overview
 
-App downloads archives with video sequences in unconstrained environments from [MOTChallenge](https://motchallenge.net/) or from your prepared archive. Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). 
+App downloads archives with video sequences from [MOTChallenge](https://motchallenge.net/) or from your prepared archive/s (which should be located in `Team Files`). Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). Also custom datasets in MOT format are avalible.
 
 Folder structure of the MOT dataset is as follows:
 
 ```python
-{root.zip}/{dataset_name}/{train}/{video_name}/{gt}_{img1}_{seqinfo.ini}   
+{root}/{dataset_name}/{train}/{video_name}/{gt}_{img1}_{seqinfo.ini}   
 ```
 
 The meaning of the individual elements is:
@@ -40,7 +40,7 @@ The meaning of the individual elements is:
 - `img1` folder with images the video consists of.
 - `seqinfo.ini` file with images and video information.
 
-You can download example of MOT datasets [here](https://motchallenge.net/data/MOT15/).
+You can download example of MOT dataset [here](https://motchallenge.net/data/MOT15/).
 
 Current version of application supports only `gt` file annotations.
 
