@@ -44,7 +44,6 @@ def check_mot_format(input_dir):
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
     mot_datasets = 0
     for r, d, f in os.walk(input_dir):
-        logger.warn('ALEX_TEST: {}_{}_{}'.format(r, d, f))
         if 'img1' in d and 'gt' in d:
             if seqinfo_file_name not in f:
                 logger.warning(
@@ -107,50 +106,9 @@ def img_size_from_seqini(txt_path):
 @my_app.callback("import_mot_format")
 @sly.timeit
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
-    storage_dir = my_app.data_dir
-    new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS,
-                                     change_name_if_conflict=True)
-    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
-    conf_tag_meta = sly.TagMeta(conf_tag_name, TagValueType.NONE)
-    meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]), sly.TagMetaCollection([conf_tag_meta]))
-    api.project.update_meta(new_project.id, meta.to_json())
 
-    for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
-        archive_path = os.path.join(storage_dir, ARH_NAME)
-        if LINKS[0]:
-            if not file_exists(archive_path):
-                logger.info('Download archive {}'.format(ARH_NAME))
-                download(LINK, archive_path)
-        else:
-            api.file.download(TEAM_ID, ds_path, archive_path)
-
-        try:
-            shutil.unpack_archive(archive_path, storage_dir)
-        except Exception('Unknown archive format {}'.format(ARH_NAME)):
-            my_app.stop()
-
-        logger.info('Check input mot format')
-        if get_file_name(ARH_NAME) in ['MOT16']:
-            remove_dir(os.path.join(storage_dir, 'test'))
-            curr_mot_dir = os.path.join(storage_dir, 'train')
-        else:
-            if mot_dataset != 'custom':
-                curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
-                check_mot_format(curr_mot_dir)
-            else:
-                mot_dirs = os.listdir(storage_dir)
-                mot_dirs.remove(ARH_NAME)
-                logger.warn('ALEX_TEST curr_mot_dirs: {}'.format(mot_dirs))
-                for curr_dir in mot_dirs:
-                    curr_mot_dir = os.path.join(storage_dir, curr_dir)
-                    check_mot_format(curr_mot_dir)
-
-        logger.warn('ALEX_TEST storage_dir: {}'.format(os.listdir(storage_dir)))
-        a = 5 / 0
-        #check_mot_format(curr_mot_dir)
-
-        dataset_name = get_file_name(ARH_NAME)
-        new_dataset = api.dataset.create(new_project.id, dataset_name, change_name_if_conflict=True)
+    def import_dataset(project_id, ds_name, curr_mot_dir):
+        new_dataset = api.dataset.create(project_id, ds_name, change_name_if_conflict=True)
         for r, d, f in os.walk(curr_mot_dir):
             if mot_bbox_file_name in f:
                 video_name = r.split('/')[-2] + video_ext
@@ -221,7 +179,49 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                                           frames=new_frames_collection)
                 logger.info('Create annotation for video {}'.format(video_name))
                 api.video.annotation.append(file_info[0].id, ann)
-        # remove_dir(curr_mot_dir)
+
+
+    storage_dir = my_app.data_dir
+    new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS,
+                                     change_name_if_conflict=True)
+    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+    conf_tag_meta = sly.TagMeta(conf_tag_name, TagValueType.NONE)
+    meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]), sly.TagMetaCollection([conf_tag_meta]))
+    api.project.update_meta(new_project.id, meta.to_json())
+
+    for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
+        archive_path = os.path.join(storage_dir, ARH_NAME)
+        if LINKS[0]:
+            if not file_exists(archive_path):
+                logger.info('Download archive {}'.format(ARH_NAME))
+                download(LINK, archive_path)
+        else:
+            api.file.download(TEAM_ID, ds_path, archive_path)
+
+        try:
+            shutil.unpack_archive(archive_path, storage_dir)
+        except Exception('Unknown archive format {}'.format(ARH_NAME)):
+            my_app.stop()
+
+        logger.info('Check input mot format')
+        if mot_dataset != 'custom':
+            if get_file_name(ARH_NAME) in ['MOT16']:
+                remove_dir(os.path.join(storage_dir, 'test'))
+                curr_mot_dir = os.path.join(storage_dir, 'train')
+            else:
+                curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+            check_mot_format(curr_mot_dir)
+            dataset_name = get_file_name(ARH_NAME)
+            import_dataset(new_project.id, dataset_name, curr_mot_dir)
+        else:
+            mot_dirs = os.listdir(storage_dir)
+            mot_dirs.remove(ARH_NAME)
+            for curr_dir in mot_dirs:
+                curr_mot_dir = os.path.join(storage_dir, curr_dir)
+                check_mot_format(curr_mot_dir)
+                dataset_name = curr_dir
+                import_dataset(new_project.id, dataset_name, curr_mot_dir)
+
     my_app.stop()
 
 
