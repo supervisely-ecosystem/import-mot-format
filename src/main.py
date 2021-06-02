@@ -8,15 +8,16 @@ from supervisely_lib.io.fs import download, file_exists, get_file_name, remove_d
 from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
 
+
 my_app = sly.AppService()
 TEAM_ID = int(os.environ['context.teamId'])
 WORKSPACE_ID = int(os.environ['context.workspaceId'])
 
-obj_class_name = 'pedestrian'
+obj_class_pedestrian = 'pedestrian'
 conf_tag_name = 'ignore_conf'
 project_name = 'mot_video'
 video_ext = '.mp4'
-mot_bbox_file_name = 'gt.txt'
+mot_bbox_filename = 'gt'
 seqinfo_file_name = 'seqinfo.ini'
 frame_rate_default = 25
 image_name_length = 6
@@ -25,23 +26,25 @@ link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 custom_ds = 'custom'
 
-mot_dataset = os.environ['modal.state.motDataset']
+#mot_dataset = os.environ['modal.state.motDataset']
 
-if mot_dataset == custom_ds:
-   ds_path = os.environ['modal.state.dsPath']
-   ARH_NAMES = [os.path.basename(ds_path)]
-   LINKS = [None]
-else:
-    mot_ds_names_str = os.environ['modal.state.currDatasets']
-    mot_ds_names = mot_ds_names_str.replace('\'', '')
-    mot_ds_names = mot_ds_names.replace(' ', '')
-    mot_ds_names = mot_ds_names[1:-1].split(',')
-    ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
-    LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
+mot_dataset = custom_ds #TODO
+
+#if mot_dataset == custom_ds:
+#   ds_path = os.environ['modal.state.dsPath']
+#   ARH_NAMES = [os.path.basename(ds_path)]
+#   LINKS = [None]
+#else:
+#    mot_ds_names_str = os.environ['modal.state.currDatasets']
+#    mot_ds_names = mot_ds_names_str.replace('\'', '')
+#    mot_ds_names = mot_ds_names.replace(' ', '')
+#    mot_ds_names = mot_ds_names[1:-1].split(',')
+#    ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
+#    LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
 
 
 def check_mot_format(input_dir):
-
+    gt_not_exist = True
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
     mot_datasets = 0
     for r, d, f in os.walk(input_dir):
@@ -49,9 +52,13 @@ def check_mot_format(input_dir):
             if seqinfo_file_name not in f:
                 logger.warning(
                     'Folder {} should contain seqinfo.ini file, will be used frame_rate by default'.format(r))
-            check_det = os.listdir(r + '/gt')
-            if mot_bbox_file_name not in check_det:
-                raise ValueError('Folder {} should contain gt.txt file'.format(r + '/gt'))
+            check_gt = os.listdir(r + '/gt')
+            for curr_gt in check_gt:
+                if curr_gt.split('_')[0] == mot_bbox_filename or curr_gt == 'gt.txt':
+                    gt_not_exist = False
+                    break
+            if gt_not_exist:
+                raise ValueError('Folder {} should contain gt annotation file'.format(r + '/gt'))
             check_imgs = os.listdir(r + '/img1')
             files_exts = set([file.split('.')[1] for file in check_imgs])
             img_names_length = set([len(file.split('.')[0]) for file in check_imgs])
@@ -108,10 +115,12 @@ def img_size_from_seqini(txt_path):
 @sly.timeit
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
-    def import_dataset(project_id, ds_name, curr_mot_dir):
+    def import_dataset(project_id, ds_name, curr_mot_dir, meta):
+        obj_classes = []
         new_dataset = api.dataset.create(project_id, ds_name, change_name_if_conflict=True)
         for r, d, f in os.walk(curr_mot_dir):
-            if mot_bbox_file_name in f:
+            if r.split('/')[-1] == mot_bbox_filename:
+            #if mot_bbox_filename in f:
                 video_name = r.split('/')[-2] + video_ext
                 logger.info('Video {} being processed'.format(video_name))
                 video_path = os.path.join(curr_mot_dir, video_name)
@@ -120,8 +129,6 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 progress = sly.Progress('Create video and figures for frame', len(images), app_logger)
                 images_ext = images[0].split('.')[1]
                 seqinfo_path = r[:-2] + seqinfo_file_name
-                frames_with_objects, frames_without_objs_conf = get_frames_with_objects_gt(
-                    os.path.join(r, mot_bbox_file_name))
                 if os.path.isfile(seqinfo_path):
                     img_size, frame_rate = img_size_from_seqini(seqinfo_path)
                 else:
@@ -129,79 +136,111 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                     img_size = (img.shape[1], img.shape[0])
                     frame_rate = frame_rate_default
                 video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'MP4V'), frame_rate, img_size)
+
+                gt_files = os.listdir(r)
+                obj_classes_data = []
+
+                for curr_gt_file in gt_files:
+                    if curr_gt_file == 'gt.txt':
+                        obj_class_name = obj_class_pedestrian
+                    else:
+                        obj_class_name = sly.fs.get_file_name(curr_gt_file).split('_')[1]
+                    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+                    obj_classes.append(obj_class)
+                    frames_with_objects, frames_without_objs_conf = get_frames_with_objects_gt(os.path.join(r, curr_gt_file))
+                    obj_classes_data.append((frames_with_objects, frames_without_objs_conf, obj_class, {}))
+
                 im_names = []
                 im_paths = []
-                ids_to_video_object = {}
                 new_frames = []
+
                 for image_id in range(1, len(images) + 1):
                     new_figures = []
                     image_name = str(image_id).zfill(image_name_length) + '.' + images_ext
                     im_names.append(image_name)
                     im_paths.append(os.path.join(imgs_path, image_name))
                     video.write(cv2.imread(os.path.join(imgs_path, image_name)))
-                    frame_object_coords = frames_with_objects[image_id]
-                    for idx, coords in frame_object_coords.items():
-                        if idx not in ids_to_video_object.keys():
-                            curr_frame_ranges = frames_without_objs_conf[idx]
-                            if len(curr_frame_ranges) == 0:
-                                ids_to_video_object[idx] = sly.VideoObject(obj_class)
-                            else:
-                                conf_tags = [VideoTag(conf_tag_meta,
-                                                      frame_range=[curr_frame_range[0] - 1, curr_frame_range[1] - 1])
-                                             for curr_frame_range in curr_frame_ranges]
-                                ids_to_video_object[idx] = sly.VideoObject(obj_class,
-                                                                           tags=VideoTagCollection(conf_tags))
-                        left, top, w, h = coords
-                        bottom = top + h
-                        if round(bottom) >= img_size[1] - 1:
-                            bottom = img_size[1] - 2
-                        right = left + w
-                        if round(right) >= img_size[0] - 1:
-                            right = img_size[0] - 2
-                        if left < 0:
-                            left = 0
-                        if top < 0:
-                            top = 0
-                        if right <= 0 or bottom <= 0 or left >= img_size[0] or top >= img_size[1]:
-                            continue
 
-                        geom = sly.Rectangle(top, left, bottom, right)
-                        figure = sly.VideoFigure(ids_to_video_object[idx], geom, image_id - 1)
-                        new_figures.append(figure)
+                    for curr_obj_class_data in obj_classes_data:
+                        frames_with_objects = curr_obj_class_data[0]
+                        frames_without_objs_conf = curr_obj_class_data[1]
+
+                        frame_object_coords = frames_with_objects[image_id]
+                        for idx, coords in frame_object_coords.items():
+                            if idx not in curr_obj_class_data[3].keys():
+                                curr_frame_ranges = frames_without_objs_conf[idx]
+                                if len(curr_frame_ranges) == 0:
+                                    curr_obj_class_data[3][idx] = sly.VideoObject(curr_obj_class_data[2])
+                                else:
+                                    conf_tags = [VideoTag(conf_tag_meta,
+                                                          frame_range=[curr_frame_range[0] - 1, curr_frame_range[1] - 1])
+                                                 for curr_frame_range in curr_frame_ranges]
+                                    curr_obj_class_data[3][idx] = sly.VideoObject(curr_obj_class_data[2],
+                                                                               tags=VideoTagCollection(conf_tags))
+                            left, top, w, h = coords
+                            bottom = top + h
+                            if round(bottom) >= img_size[1] - 1:
+                                bottom = img_size[1] - 2
+                            right = left + w
+                            if round(right) >= img_size[0] - 1:
+                                right = img_size[0] - 2
+                            if left < 0:
+                                left = 0
+                            if top < 0:
+                                top = 0
+                            if right <= 0 or bottom <= 0 or left >= img_size[0] or top >= img_size[1]:
+                                continue
+
+                            geom = sly.Rectangle(top, left, bottom, right)
+                            figure = sly.VideoFigure(curr_obj_class_data[3][idx], geom, image_id - 1)
+                            new_figures.append(figure)
+
                     new_frame = sly.Frame(image_id - 1, new_figures)
                     new_frames.append(new_frame)
                     progress.iter_done_report()
 
                 video.release()
+
+                video_objects = []
+                for obj_class_data in obj_classes_data:
+                    video_objects.extend(list(obj_class_data[3].values()))
+
+                new_meta = sly.ProjectMeta(sly.ObjClassCollection(obj_classes))
+                meta = meta.merge(new_meta)
+                api.project.update_meta(new_project.id, meta.to_json())
                 file_info = api.video.upload_paths(new_dataset.id, [video_name], [video_path])
                 new_frames_collection = sly.FrameCollection(new_frames)
-                new_objects = sly.VideoObjectCollection(ids_to_video_object.values())
+                new_objects = sly.VideoObjectCollection(video_objects)
                 ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects,
                                           frames=new_frames_collection)
                 logger.info('Create annotation for video {}'.format(video_name))
                 api.video.annotation.append(file_info[0].id, ann)
+                return meta
 
-    storage_dir = my_app.data_dir
+    #storage_dir = my_app.data_dir
+    storage_dir = '/home/andrew/alex_work/app_data/data/2DMOT2015/mmmooottt/train'
     new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS,
                                      change_name_if_conflict=True)
-    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+
     conf_tag_meta = sly.TagMeta(conf_tag_name, TagValueType.NONE)
-    meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]), sly.TagMetaCollection([conf_tag_meta]))
+    meta = sly.ProjectMeta(tag_metas=sly.TagMetaCollection([conf_tag_meta]))
     api.project.update_meta(new_project.id, meta.to_json())
 
-    for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
-        archive_path = os.path.join(storage_dir, ARH_NAME)
-        if LINKS[0]:
-            if not file_exists(archive_path):
-                logger.info('Download archive {}'.format(ARH_NAME))
-                download(LINK, archive_path)
-        else:
-            api.file.download(TEAM_ID, ds_path, archive_path)
+    for i in range(1):
+        ARH_NAME = 'rte'
+    #for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
+        #archive_path = os.path.join(storage_dir, ARH_NAME)
+        #if LINKS[0]:
+        #    if not file_exists(archive_path):
+        #        logger.info('Download archive {}'.format(ARH_NAME))
+        #        download(LINK, archive_path)
+        #else:
+        #    api.file.download(TEAM_ID, ds_path, archive_path)
 
-        try:
-            shutil.unpack_archive(archive_path, storage_dir)
-        except Exception('Unknown archive format {}'.format(ARH_NAME)):
-            my_app.stop()
+        #try:
+        #    shutil.unpack_archive(archive_path, storage_dir)
+        #except Exception('Unknown archive format {}'.format(ARH_NAME)):
+        #    my_app.stop()
 
         logger.info('Check input mot format')
         if mot_dataset != custom_ds:
@@ -215,12 +254,12 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             import_dataset(new_project.id, dataset_name, curr_mot_dir)
         else:
             mot_dirs = os.listdir(storage_dir)
-            mot_dirs.remove(ARH_NAME)
+            #mot_dirs.remove(ARH_NAME)
             for curr_dir in mot_dirs:
                 curr_mot_dir = os.path.join(storage_dir, curr_dir)
                 check_mot_format(curr_mot_dir)
                 dataset_name = curr_dir
-                import_dataset(new_project.id, dataset_name, curr_mot_dir)
+                meta = import_dataset(new_project.id, dataset_name, curr_mot_dir, meta)
 
     my_app.stop()
 
