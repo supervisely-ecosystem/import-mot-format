@@ -43,7 +43,7 @@ You can download example of MOT15 dataset [here](https://motchallenge.net/data/M
 
 Current version of application supports only `gt` file annotations.
 
-After application execution, `mot_video` project will be created in your workspace. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`. Also new project will contain `None` type tag with name `ignore_conf`. Tag indicates that you do not need to take into account this figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
+After application execution, `mot_video` project will be created in your workspace. New Supervisely project could contain any number of classes: e.g. `MOT{15,16,17,20}` datasets will contain only `pedestrian` class with shape `Rectangle`(due to the fact that only objects of the pedestrian class are labelled in source datasets). Also new project will contain `None` type tag with name `ignore_conf`. Tag indicates that you do not need to take into account this figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
 
 
 
