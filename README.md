@@ -58,9 +58,9 @@ After application execution, `mot_video` project will be created in your workspa
 
 Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
 
-<img src="https://i.imgur.com/cA0ldX2.png" width="600px"/>
+<img src="https://i.imgur.com/NdgxSJ7.png" width="600px"/>
 
-Or by path link on your archive in `Files` page.
+Or your dataset in MOT format by path to your archive in `Team Files`.
 
 <img src="https://i.imgur.com/5VvVkOu.png" width="600px"/>
 
