@@ -114,10 +114,12 @@ def img_size_from_seqini(txt_path):
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     def import_dataset(project_id, ds_name, curr_mot_dir, meta):
+        logger.warn('{}'.format(curr_mot_dir))
         obj_classes = []
         new_dataset = api.dataset.create(project_id, ds_name, change_name_if_conflict=True)
         for r, d, f in os.walk(curr_mot_dir):
             if r.split('/')[-1] == mot_bbox_filename:
+                logger.warn('{}'.format(r))
                 video_name = r.split('/')[-2] + video_ext
                 logger.info('Video {} being processed'.format(video_name))
                 video_path = os.path.join(curr_mot_dir, video_name)
