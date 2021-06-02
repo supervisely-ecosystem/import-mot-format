@@ -60,7 +60,7 @@ Your can choose and download datasets from [MOTChallenge](https://motchallenge.n
 
 <img src="https://i.imgur.com/NdgxSJ7.png" width="600px"/>
 
-Or by path link on your archive in `Files` page.
+Or your dataset in MOT format by path to your archive in `Team Files`.
 
 <img src="https://i.imgur.com/5VvVkOu.png" width="600px"/>
 
