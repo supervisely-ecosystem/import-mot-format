@@ -29,7 +29,6 @@ mot_dataset = os.environ['modal.state.motDataset']
 if mot_dataset == 'custom':
    ds_path = os.environ['modal.state.dsPath']
    ARH_NAMES = [os.path.basename(ds_path)]
-   logger.warn('ALEX_TEST: {}'.format(ARH_NAMES))
    LINKS = [None]
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
@@ -134,6 +133,8 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             curr_mot_dir = os.path.join(storage_dir, 'train')
         else:
             curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+
+        logger.warn('ALEX_TEST: {}'.format(os.listdir(storage_dir)))
         check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
