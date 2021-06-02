@@ -26,21 +26,19 @@ link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 custom_ds = 'custom'
 
-#mot_dataset = os.environ['modal.state.motDataset']
+mot_dataset = os.environ['modal.state.motDataset']
 
-mot_dataset = custom_ds #TODO
-
-#if mot_dataset == custom_ds:
-#   ds_path = os.environ['modal.state.dsPath']
-#   ARH_NAMES = [os.path.basename(ds_path)]
-#   LINKS = [None]
-#else:
-#    mot_ds_names_str = os.environ['modal.state.currDatasets']
-#    mot_ds_names = mot_ds_names_str.replace('\'', '')
-#    mot_ds_names = mot_ds_names.replace(' ', '')
-#    mot_ds_names = mot_ds_names[1:-1].split(',')
-#    ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
-#    LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
+if mot_dataset == custom_ds:
+   ds_path = os.environ['modal.state.dsPath']
+   ARH_NAMES = [os.path.basename(ds_path)]
+   LINKS = [None]
+else:
+    mot_ds_names_str = os.environ['modal.state.currDatasets']
+    mot_ds_names = mot_ds_names_str.replace('\'', '')
+    mot_ds_names = mot_ds_names.replace(' ', '')
+    mot_ds_names = mot_ds_names[1:-1].split(',')
+    ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
+    LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
 
 
 def check_mot_format(input_dir):
@@ -120,7 +118,6 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
         new_dataset = api.dataset.create(project_id, ds_name, change_name_if_conflict=True)
         for r, d, f in os.walk(curr_mot_dir):
             if r.split('/')[-1] == mot_bbox_filename:
-            #if mot_bbox_filename in f:
                 video_name = r.split('/')[-2] + video_ext
                 logger.info('Video {} being processed'.format(video_name))
                 video_path = os.path.join(curr_mot_dir, video_name)
@@ -217,8 +214,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 api.video.annotation.append(file_info[0].id, ann)
                 return meta
 
-    #storage_dir = my_app.data_dir
-    storage_dir = '/home/andrew/alex_work/app_data/data/2DMOT2015/mmmooottt/train'
+    storage_dir = my_app.data_dir
     new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS,
                                      change_name_if_conflict=True)
 
@@ -226,21 +222,19 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
     meta = sly.ProjectMeta(tag_metas=sly.TagMetaCollection([conf_tag_meta]))
     api.project.update_meta(new_project.id, meta.to_json())
 
-    for i in range(1):
-        ARH_NAME = 'rte'
-    #for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
-        #archive_path = os.path.join(storage_dir, ARH_NAME)
-        #if LINKS[0]:
-        #    if not file_exists(archive_path):
-        #        logger.info('Download archive {}'.format(ARH_NAME))
-        #        download(LINK, archive_path)
-        #else:
-        #    api.file.download(TEAM_ID, ds_path, archive_path)
+    for ARH_NAME, LINK in zip(ARH_NAMES, LINKS):
+        archive_path = os.path.join(storage_dir, ARH_NAME)
+        if LINKS[0]:
+            if not file_exists(archive_path):
+                logger.info('Download archive {}'.format(ARH_NAME))
+                download(LINK, archive_path)
+        else:
+            api.file.download(TEAM_ID, ds_path, archive_path)
 
-        #try:
-        #    shutil.unpack_archive(archive_path, storage_dir)
-        #except Exception('Unknown archive format {}'.format(ARH_NAME)):
-        #    my_app.stop()
+        try:
+            shutil.unpack_archive(archive_path, storage_dir)
+        except Exception('Unknown archive format {}'.format(ARH_NAME)):
+            my_app.stop()
 
         logger.info('Check input mot format')
         if mot_dataset != custom_ds:
@@ -254,7 +248,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             import_dataset(new_project.id, dataset_name, curr_mot_dir)
         else:
             mot_dirs = os.listdir(storage_dir)
-            #mot_dirs.remove(ARH_NAME)
+            mot_dirs.remove(ARH_NAME)
             for curr_dir in mot_dirs:
                 curr_mot_dir = os.path.join(storage_dir, curr_dir)
                 check_mot_format(curr_mot_dir)
