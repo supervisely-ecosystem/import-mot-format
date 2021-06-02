@@ -1,5 +1,5 @@
 import os
-import zipfile
+import zipfile, tarfile
 import cv2
 import supervisely_lib as sly
 from collections import defaultdict
@@ -122,6 +122,10 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             logger.info('Extract archive {}'.format(ARH_NAME))
             with zipfile.ZipFile(archive_path, 'r') as zip_ref:
                 zip_ref.extractall(storage_dir)
+        elif tarfile.is_tarfile(archive_path):
+            logger.info('Extract archive {}'.format(ARH_NAME))
+            with tarfile.open(archive_path) as archive:
+                archive.extractall(storage_dir)
         else:
             raise Exception("No such file {}".format(ARH_NAME))
 
