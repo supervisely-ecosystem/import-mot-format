@@ -134,11 +134,16 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             remove_dir(os.path.join(storage_dir, 'test'))
             curr_mot_dir = os.path.join(storage_dir, 'train')
         else:
-            curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+            if mot_dataset != 'custom':
+                curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
+                check_mot_format(curr_mot_dir)
+            else:
+                curr_mot_dirs = os.listdir(storage_dir).remove(ARH_NAME)
+                logger.warn('ALEX_TEST: {}'.format(curr_mot_dirs))
 
         logger.warn('ALEX_TEST: {}'.format(os.listdir(storage_dir)))
-        logger.warn('ALEX_TEST: {}'.format(os.listdir(curr_mot_dir)))
-        check_mot_format(curr_mot_dir)
+
+        #check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
         new_dataset = api.dataset.create(new_project.id, dataset_name, change_name_if_conflict=True)
