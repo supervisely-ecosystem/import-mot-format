@@ -138,11 +138,14 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
                 check_mot_format(curr_mot_dir)
             else:
-                curr_mot_dirs = os.listdir(storage_dir).remove(ARH_NAME)
-                logger.warn('ALEX_TEST: {}'.format(curr_mot_dirs))
+                curr_mot_dirs = os.listdir(storage_dir)
+                curr_mot_dirs.remove(ARH_NAME)
+                logger.warn('ALEX_TEST curr_mot_dirs: {}'.format(curr_mot_dirs))
+                for curr_mot_dir in curr_mot_dirs:
+                    check_mot_format(curr_mot_dir)
 
-        logger.warn('ALEX_TEST: {}'.format(os.listdir(storage_dir)))
-
+        logger.warn('ALEX_TEST storage_dir: {}'.format(os.listdir(storage_dir)))
+        a = 5 / 0
         #check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
