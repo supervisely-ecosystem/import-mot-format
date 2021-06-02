@@ -33,7 +33,6 @@ Folder structure of the MOT dataset is as follows:
 
 The meaning of the individual elements is:
 
-- `root` root archive of the MOT dataset.
 - `dataset_name` name of dataset in created project.
 - `video_name` name of video in created dataset.
 - `gt` folder with CSV text-file (gt.txt), containing one object instance per line. Each line contain 10 values. More about MOT format value you can read  [here](https://motchallenge.net/instructions/).

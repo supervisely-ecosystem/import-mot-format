@@ -126,16 +126,6 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             shutil.unpack_archive(archive_path, storage_dir)
         except Exception('Unknown archive format {}'.format(ARH_NAME)):
             my_app.stop()
-        #if zipfile.is_zipfile(archive_path):
-        #    logger.info('Extract archive {}'.format(ARH_NAME))
-        #    with zipfile.ZipFile(archive_path, 'r') as zip_ref:
-        #        zip_ref.extractall(storage_dir)
-        #elif tarfile.is_tarfile(archive_path):
-        #    logger.info('Extract archive {}'.format(ARH_NAME))
-        #    with tarfile.open(archive_path) as archive:
-        #        archive.extractall(storage_dir)
-        #else:
-        #    raise Exception("No such file {}".format(ARH_NAME))
 
         logger.info('Check input mot format')
         if get_file_name(ARH_NAME) in ['MOT16']:
