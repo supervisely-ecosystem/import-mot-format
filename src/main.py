@@ -115,6 +115,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
     def import_dataset(project_id, ds_name, curr_mot_dir, meta):
         obj_classes = []
+        obj_class_names = []
         new_dataset = api.dataset.create(project_id, ds_name, change_name_if_conflict=True)
         for r, d, f in os.walk(curr_mot_dir):
             if r.split('/')[-1] == mot_bbox_filename:
@@ -142,8 +143,11 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                         obj_class_name = obj_class_pedestrian
                     else:
                         obj_class_name = sly.fs.get_file_name(curr_gt_file).split('_')[1]
-                    obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
-                    obj_classes.append(obj_class)
+
+                    if obj_class_name not in obj_class_names:
+                        obj_class_names.append(obj_class_name)
+                        obj_class = sly.ObjClass(obj_class_name, sly.Rectangle)
+                        obj_classes.append(obj_class)
                     frames_with_objects, frames_without_objs_conf = get_frames_with_objects_gt(os.path.join(r, curr_gt_file))
                     obj_classes_data.append((frames_with_objects, frames_without_objs_conf, obj_class, {}))
 
@@ -203,11 +207,8 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                     video_objects.extend(list(obj_class_data[3].values()))
 
                 new_meta = sly.ProjectMeta(sly.ObjClassCollection(obj_classes))
-                logger.warn('{}'.format(obj_classes))
                 meta = meta.merge(new_meta)
-                logger.warn('meta')
                 api.project.update_meta(new_project.id, meta.to_json())
-                logger.warn('project.update_meta')
                 file_info = api.video.upload_paths(new_dataset.id, [video_name], [video_path])
                 new_frames_collection = sly.FrameCollection(new_frames)
                 new_objects = sly.VideoObjectCollection(video_objects)
