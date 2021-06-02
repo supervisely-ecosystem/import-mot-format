@@ -40,9 +40,11 @@ else:
 
 
 def check_mot_format(input_dir):
+
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
     mot_datasets = 0
     for r, d, f in os.walk(input_dir):
+        logger.warn('ALEX_TEST: {}_{}_{}'.format(r, d, f))
         if 'img1' in d and 'gt' in d:
             if seqinfo_file_name not in f:
                 logger.warning(
@@ -135,6 +137,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
 
         logger.warn('ALEX_TEST: {}'.format(os.listdir(storage_dir)))
+        logger.warn('ALEX_TEST: {}'.format(os.listdir(curr_mot_dir)))
         check_mot_format(curr_mot_dir)
 
         dataset_name = get_file_name(ARH_NAME)
