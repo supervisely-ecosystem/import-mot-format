@@ -203,8 +203,11 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                     video_objects.extend(list(obj_class_data[3].values()))
 
                 new_meta = sly.ProjectMeta(sly.ObjClassCollection(obj_classes))
+                logger.warn('{}'.format(obj_classes))
                 meta = meta.merge(new_meta)
+                logger.warn('meta')
                 api.project.update_meta(new_project.id, meta.to_json())
+                logger.warn('project.update_meta')
                 file_info = api.video.upload_paths(new_dataset.id, [video_name], [video_path])
                 new_frames_collection = sly.FrameCollection(new_frames)
                 new_objects = sly.VideoObjectCollection(video_objects)
