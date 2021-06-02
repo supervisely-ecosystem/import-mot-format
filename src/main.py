@@ -245,7 +245,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 curr_mot_dir = os.path.join(storage_dir, get_file_name(ARH_NAME))
             check_mot_format(curr_mot_dir)
             dataset_name = get_file_name(ARH_NAME)
-            import_dataset(new_project.id, dataset_name, curr_mot_dir)
+            import_dataset(new_project.id, dataset_name, curr_mot_dir, meta)
         else:
             mot_dirs = os.listdir(storage_dir)
             mot_dirs.remove(ARH_NAME)
