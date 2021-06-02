@@ -1,5 +1,5 @@
 import os
-import zipfile, tarfile, shutil
+import shutil
 import cv2
 import supervisely_lib as sly
 from collections import defaultdict
@@ -23,10 +23,11 @@ image_name_length = 6
 logger = sly.logger
 link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
+custom_ds = 'custom'
 
 mot_dataset = os.environ['modal.state.motDataset']
 
-if mot_dataset == 'custom':
+if mot_dataset == custom_ds:
    ds_path = os.environ['modal.state.dsPath']
    ARH_NAMES = [os.path.basename(ds_path)]
    LINKS = [None]
@@ -180,7 +181,6 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 logger.info('Create annotation for video {}'.format(video_name))
                 api.video.annotation.append(file_info[0].id, ann)
 
-
     storage_dir = my_app.data_dir
     new_project = api.project.create(WORKSPACE_ID, project_name, type=sly.ProjectType.VIDEOS,
                                      change_name_if_conflict=True)
@@ -204,7 +204,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             my_app.stop()
 
         logger.info('Check input mot format')
-        if mot_dataset != 'custom':
+        if mot_dataset != custom_ds:
             if get_file_name(ARH_NAME) in ['MOT16']:
                 remove_dir(os.path.join(storage_dir, 'test'))
                 curr_mot_dir = os.path.join(storage_dir, 'train')
