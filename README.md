@@ -23,12 +23,12 @@
 
 ## Overview
 
-App downloads archives with video sequences from [MOTChallenge](https://motchallenge.net/) or from your prepared archive/s (which should be located in `Team Files`). Then the archives are extracted and converted to the [Supervisely](https://app.supervise.ly). We use for convertation `MOT15`, `MOT16`, `MOT17` and `MOT20` datasets from [MOTChallenge](https://motchallenge.net/). Also custom datasets in MOT format are avalible.
+App downloads [MOTChallenge](https://motchallenge.net/) or your prepared archives(which should be located in `Team Files`) with video sequences. After extraction data is converted to [Supervisely](https://app.supervise.ly) format. Currently suppored datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`.
 
 Folder structure of the MOT dataset is as follows:
 
 ```python
-{root}/{dataset_name}/{train}/{video_name}/{gt}_{img1}_{seqinfo.ini}   
+{root}/{dataset_name}/{train}/{video_name}/{gt + img1 + seqinfo.ini}   
 ```
 
 The meaning of the individual elements is:
@@ -40,11 +40,11 @@ The meaning of the individual elements is:
 - `img1` folder with images the video consists of.
 - `seqinfo.ini` file with images and video information.
 
-You can download example of MOT dataset [here](https://motchallenge.net/data/MOT15/).
+You can download example of MOT15 dataset [here](https://motchallenge.net/data/MOT15/).
 
 Current version of application supports only `gt` file annotations.
 
-After application execution, a project named `mot_video` will be created in your workspace. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`. Also new project will contain `None` type tag with name `ignore_conf`. This tag indicates that you do not need to take the figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
+After application execution, `mot_video` project will be created in your workspace. New Supervisely project will contain only one class: `pedestrian` with shape `Rectangle`. Also new project will contain `None` type tag with name `ignore_conf`. Tag indicates that you do not need to take into account this figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
 
 
 
