@@ -5,15 +5,15 @@
         <el-tab-pane name="mot">
             <el-radio slot="label" v-model="state.motDataset" label="mot">
                 MOTChallenge datasets
+                <sly-field title="Choose MOTChallenge datasets">
+                    <el-checkbox-group v-model="state.currDatasets">
+                        <el-checkbox label="MOT15"></el-checkbox>
+                        <el-checkbox label="MOT16"></el-checkbox>
+                        <el-checkbox label="MOT17"></el-checkbox>
+                        <el-checkbox label="MOT20"></el-checkbox>
+                    </el-checkbox-group>
+                </sly-field>
             </el-radio>
-            <sly-field title="Choose MOTChallenge datasets">
-                <el-checkbox-group v-model="state.currDatasets">
-                    <el-checkbox label="MOT15"></el-checkbox>
-                    <el-checkbox label="MOT16"></el-checkbox>
-                    <el-checkbox label="MOT17"></el-checkbox>
-                    <el-checkbox label="MOT20"></el-checkbox>
-                </el-checkbox-group>
-            </sly-field>
         </el-tab-pane>
         <el-tab-pane name="custom">
             <el-radio slot="label" v-model="state.motDataset" label="custom">
