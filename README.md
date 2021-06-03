@@ -35,7 +35,7 @@ The meaning of the individual elements is:
 
 - `dataset_name` name of dataset in created project.
 - `video_name` name of video in created dataset.
-- `gt` folder with CSV text-file (gt.txt), containing one object instance per line. Each line contain 10 values. More about MOT format value you can read  [here](https://motchallenge.net/instructions/).
+- `gt` folder with CSV text-files (format: `gt_{classname}.txt`), containing one object instance per line. Each line contain 10 values. More about MOT format value you can read  [here](https://motchallenge.net/instructions/).
 - `img1` folder with images the video consists of.
 - `seqinfo.ini` file with images and video information.
 
