@@ -64,6 +64,8 @@ Or your dataset in MOT format by path to your archive in `Team Files`.
 
 <img src="https://i.imgur.com/5VvVkOu.png" width="600px"/>
 
+Press `RUN`button. Now the window with program running logs will aappear. You don't have to wait for the program to finish execution(You can safely close the window)
+
 
 
 ## How to use
