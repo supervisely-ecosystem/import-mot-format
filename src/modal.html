@@ -1,31 +1,28 @@
 <sly-card class="mt15"
-        title="Import data"
-        subtitle="Choose import data">
-  <el-tabs type="border-card" class="el-tabs-cards" v-model="state.mot_dataset">
-      <el-tab-pane name="mot">
-          <el-radio slot="label" v-model="state.motDataset" label="mot">
-              MOTChallenge datasets
-          </el-radio>
+          title="Import data"
+          subtitle="Choose import data">
+    <el-tabs type="border-card" class="el-tabs-cards" v-model="state.mot_dataset">
+        <el-tab-pane name="mot">
+            <el-radio slot="label" v-model="state.motDataset" label="mot">
+                MOTChallenge datasets
+            </el-radio>
 
             <sly-field title="Choose MOTChallenge datasets">
+                <el-checkbox-group v-model="state.currDatasets">
+                    <el-checkbox label="MOT15"></el-checkbox>
+                    <el-checkbox label="MOT16"></el-checkbox>
+                    <el-checkbox label="MOT17"></el-checkbox>
+                    <el-checkbox label="MOT20"></el-checkbox>
+                </el-checkbox-group>
             </sly-field>
-            <template>
-              <el-checkbox-group v-model="state.currDatasets">
-                <el-checkbox label="MOT15"></el-checkbox>
-                <el-checkbox label="MOT16"></el-checkbox>
-                <el-checkbox label="MOT17"></el-checkbox>
-                <el-checkbox label="MOT20"></el-checkbox>
-              </el-checkbox-group>
-            </template>
-
-      </el-tab-pane>
-      <el-tab-pane name="custom">
-          <el-radio slot="label" v-model="state.motDataset" label="custom">
-              Custom dataset
-          </el-radio>
-          <sly-field title="Path to tar file" description="Copy path in Team Files">
-              <el-input v-model="state.dsPath" placeholder="Path to archive in Team Files"></el-input>
-          </sly-field>
-      </el-tab-pane>
-  </el-tabs>
+        </el-tab-pane>
+        <el-tab-pane name="custom">
+            <el-radio slot="label" v-model="state.motDataset" label="custom">
+                Custom dataset
+            </el-radio>
+            <sly-field title="Path to tar file" description="Copy path in Team Files">
+                <el-input v-model="state.dsPath" placeholder="Path to archive in Team Files"></el-input>
+            </sly-field>
+        </el-tab-pane>
+    </el-tabs>
 </sly-card>
