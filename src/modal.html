@@ -1,6 +1,6 @@
-<sly-card class="mt15"
+<sly-field
           title="Import data"
-          subtitle="Choose import data">
+          description="Choose import data">
     <el-tabs type="border-card" class="el-tabs-cards" v-model="state.motDataset">
         <el-tab-pane name="mot">
             <el-radio slot="label" v-model="state.motDataset" label="mot">
@@ -24,4 +24,4 @@
             </sly-field>
         </el-tab-pane>
     </el-tabs>
-</sly-card>
+</sly-field>
