@@ -34,6 +34,7 @@ if mot_dataset == custom_ds:
    LINKS = [None]
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
+    logger.warn('{}'.format(mot_ds_names_str))
     mot_ds_names = mot_ds_names_str.replace('\'', '')
     mot_ds_names = mot_ds_names.replace(' ', '')
     mot_ds_names = mot_ds_names[1:-1].split(',')
