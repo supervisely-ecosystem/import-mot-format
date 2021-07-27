@@ -39,7 +39,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                                                                   total=file_size,
                                                                   is_size=True)
 
-            api.file.download(g.TEAM_ID, g.ds_path, archive_path, progress_cb=progress_download_cb)
+            api.file.download(g.TEAM_ID, g.ds_path, archive_path, cache=g.my_app.cache, progress_cb=progress_download_cb)
         try:
             shutil.unpack_archive(archive_path, g.storage_dir)
         except Exception('Unknown archive format {}'.format(ARH_NAME)):
