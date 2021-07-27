@@ -81,10 +81,9 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     obj_class_names = []
     new_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
 
-    video_names = [d for d in os.listdir(curr_mot_dir)]
+    video_names = [d for d in os.listdir(curr_mot_dir) if os.path.isdir(os.path.join(curr_mot_dir, d))]
 
     progress = sly.Progress(f'Importing videos', len(video_names), app_logger)
-    processed_video_frames = 0
     for r, d, f in os.walk(curr_mot_dir):
         if r.split('/')[-1] == g.mot_bbox_filename:
             video_name = r.split('/')[-2] + g.video_ext
@@ -92,6 +91,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
             imgs_path = r[:-2] + 'img1'
             images = os.listdir(imgs_path)
             # progress = sly.Progress(f'Importing "{video_name}"', len(images), app_logger)
+            processed_video_frames = 0
             images_ext = images[0].split('.')[1]
             seqinfo_path = r[:-2] + g.seqinfo_file_name
             if os.path.isfile(seqinfo_path):
