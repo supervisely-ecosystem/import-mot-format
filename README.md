@@ -1,7 +1,7 @@
 
 
 <div align="center" markdown>
-<img src="https://i.imgur.com/DLlZIes.png"/>
+<img src="https://i.imgur.com/waji4Nl.png"/>
 
 
 # Import MOT
@@ -59,17 +59,17 @@ After application execution, you will be redirected to `Tasks` page and `mot_vid
 
 **Step 2**: Open `Plugins & Apps` -> `import-mot-format` -> `Run` 
 
-<img src="https://i.imgur.com/FVrbqSn.png"/>
+<img src="https://i.imgur.com/H8L9XGO.png"/>
 
 **Step 3**: Select datasets import mode.
 
 Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
 
-<img src="https://i.imgur.com/NdgxSJ7.png" width="600px"/>
+<img src="https://i.imgur.com/tEwzxlM.png" width="600px"/>
 
 Or your dataset in MOT format by path to your archive in `Team Files`.
 
-<img src="https://i.imgur.com/5VvVkOu.png" width="600px"/>
+<img src="https://i.imgur.com/O8RWL8E.png" width="600px"/>
 
 Press `RUN`button. Now the window with program running logs will aappear. You don't have to wait for the program to finish execution(You can safely close the window)
 
@@ -77,4 +77,4 @@ Press `RUN`button. Now the window with program running logs will aappear. You do
 
 Result project will be saved in your current `Workspace` with name `mot_video`.
 
-<img src="https://i.imgur.com/b0hafY5.png"/>
+<img src="https://i.imgur.com/tA0lrEN.png"/>
