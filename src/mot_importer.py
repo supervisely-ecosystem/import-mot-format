@@ -164,7 +164,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
 
                 new_frame = sly.Frame(image_id - 1, new_figures)
                 new_frames.append(new_frame)
-                progress.iter_done_report()
+            progress.iter_done_report()
 
             video.release()
 
