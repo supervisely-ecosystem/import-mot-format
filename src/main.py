@@ -178,6 +178,9 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                                                  for curr_frame_range in curr_frame_ranges]
                                     curr_obj_class_data[3][idx] = sly.VideoObject(curr_obj_class_data[2],
                                                                                tags=VideoTagCollection(conf_tags))
+                            if len(coords) != 4:
+                                logger.warn('{}'.format(coords))
+                                logger.warn('{}'.format(frame_object_coords))
                             left, top, w, h = coords
                             bottom = top + h
                             if round(bottom) >= img_size[1] - 1:
