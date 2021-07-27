@@ -130,7 +130,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
 
                     frame_object_coords = frames_with_objects[image_id]
                     for idx, coords in frame_object_coords.items():
-                        if len(coords) > 4:
+                        if len(coords) != 4:
                             continue
                         if idx not in curr_obj_class_data[3].keys():
                             curr_frame_ranges = frames_without_objs_conf[idx]
