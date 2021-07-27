@@ -81,7 +81,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     obj_class_names = []
     new_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
 
-    video_names = [d for d in os.listdir(curr_mot_dir) if os.path.isdir(d)]
+    video_names = [d for d in os.listdir(curr_mot_dir)]
 
     progress = sly.Progress(f'Importing videos', len(video_names), app_logger)
     processed_video_frames = 0
