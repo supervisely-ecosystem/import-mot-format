@@ -2,5 +2,6 @@
 venv
 /src/models/__pycache__
 /src/utils/__pycache__
+/src/debug
 .idea
 MOT20Labels

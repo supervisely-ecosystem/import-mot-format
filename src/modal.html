@@ -1,17 +1,23 @@
-<sly-field
-          title="Import data"
-          description="Choose import data">
+<sly-field>
     <el-tabs type="border-card" class="el-tabs-cards" v-model="state.motDataset">
         <el-tab-pane name="mot">
             <el-radio slot="label" v-model="state.motDataset" label="mot">
                 MOTChallenge datasets
             </el-radio>
-            <sly-field title="Choose MOTChallenge datasets">
+            <sly-field>
                 <el-checkbox-group v-model="state.currDatasets">
-                    <el-checkbox label="MOT15"></el-checkbox>
-                    <el-checkbox label="MOT16"></el-checkbox>
-                    <el-checkbox label="MOT17"></el-checkbox>
-                    <el-checkbox label="MOT20"></el-checkbox>
+                    <div class="mt5">
+                        <el-checkbox label="MOT15"></el-checkbox>
+                    </div>
+                    <div class="mt5">
+                        <el-checkbox label="MOT16"></el-checkbox>
+                    </div>
+                    <div class="mt5">
+                        <el-checkbox label="MOT17"></el-checkbox>
+                    </div>
+                    <div class="mt5">
+                        <el-checkbox label="MOT20"></el-checkbox>
+                    </div>
                 </el-checkbox-group>
             </sly-field>
         </el-tab-pane>
