@@ -1,9 +1,11 @@
 import supervisely_lib as sly
 from functools import partial
+import globals as g
 
 def update_progress(count, api: sly.Api, task_id, progress: sly.Progress):
     count = min(count, progress.total - progress.current)
     progress.iters_done(count)
+    g.my_app.logger.info(f"{progress.current_label}/{progress.total_label}")
     if progress.need_report():
         progress.report_progress()
 

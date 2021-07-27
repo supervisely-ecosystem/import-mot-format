@@ -27,7 +27,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 response = requests.head(LINK, allow_redirects=True)
                 sizeb = int(response.headers.get('content-length', 0))
                 progress_cb = dl_progress.get_progress_cb(g.api, task_id, f"Download archive {ARH_NAME}", sizeb, is_size=True)
-                download(LINK, archive_path, g.my_app.cache, progress=progress_cb)
+                download(LINK, archive_path, g.my_app.cache, progress_cb)
         else:
             file_size = api.file.get_info_by_path(g.team_id, g.ds_path).sizeb
             progress_download_cb = dl_progress.get_progress_cb(g.api,
