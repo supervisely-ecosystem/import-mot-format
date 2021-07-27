@@ -166,7 +166,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
                 new_frame = sly.Frame(image_id - 1, new_figures)
                 new_frames.append(new_frame)
                 processed_video_frames += 1
-                g.logger.info(f"{processed_video_frames}/{len(images)}")
+                g.logger.info(f"Processing video frames: {processed_video_frames}/{len(images)}")
 
             progress.iter_done_report()
             video.release()
