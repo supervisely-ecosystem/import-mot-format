@@ -26,6 +26,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
             if not file_exists(archive_path):
                 response = requests.head(LINK, allow_redirects=True)
                 sizeb = int(response.headers.get('content-length', 0))
+                g.logger(f"Start downloading {ARH_NAME}")
                 progress_cb = dl_progress.get_progress_cb(g.api, task_id, f"Download archive {ARH_NAME}", sizeb, is_size=True)
                 download(LINK, archive_path, g.my_app.cache, progress_cb)
         else:
