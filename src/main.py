@@ -31,10 +31,10 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                 download(LINK, archive_path, g.my_app.cache, progress_cb)
         else:
             file_name = os.path.basename(os.path.normpath(g.ds_path))
-            file_size = api.file.get_info_by_path(g.team_id, g.ds_path).sizeb
+            file_size = api.file.get_info_by_path(g.TEAM_ID, g.ds_path).sizeb
             g.logger.info(f"Start downloading {file_name}")
             progress_download_cb = dl_progress.get_progress_cb(g.api,
-                                                                  g.task_id,
+                                                                  task_id,
                                                                   f'Downloading "{file_name}"',
                                                                   total=file_size,
                                                                   is_size=True)
