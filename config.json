@@ -1,15 +1,15 @@
 {
-  "name": "import-mot-format",
+  "name": "Import MOT",
   "type": "app",
   "categories": [
     "Import"
   ],
-  "description": "Convert mot format to supervysely",
-  "docker_image": "supervisely/base-py-sdk:6.1.80",
+  "description": "Converts MOT format to Supervisely",
+  "docker_image": "supervisely/base-py-sdk:6.1.92",
   "main_script": "src/main.py",
   "modal_template": "src/modal.html",
   "modal_template_state": {"currDatasets": ["MOT15"], "motDataset":  "mot"},
-  "task_location": "application_sessions",
+  "task_location": "workspace_tasks",
   "isolate": true,
   "headless": true,
   "icon": "https://i.imgur.com/Bm7azgs.png",
