@@ -84,6 +84,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     video_names = [d for d in os.listdir(curr_mot_dir) if os.path.isdir(d)]
 
     progress = sly.Progress(f'Importing videos', len(video_names), app_logger)
+    processed_video_frames = 0
     for r, d, f in os.walk(curr_mot_dir):
         if r.split('/')[-1] == g.mot_bbox_filename:
             video_name = r.split('/')[-2] + g.video_ext
@@ -164,8 +165,10 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
 
                 new_frame = sly.Frame(image_id - 1, new_figures)
                 new_frames.append(new_frame)
-            progress.iter_done_report()
+                processed_video_frames += 1
+                g.logger.info(f"{processed_video_frames}/{len(images)}")
 
+            progress.iter_done_report()
             video.release()
 
             video_objects = []
