@@ -38,6 +38,7 @@ def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
                                                                   f'Downloading "{file_name}"',
                                                                   total=file_size,
                                                                   is_size=True)
+
             api.file.download(g.TEAM_ID, g.ds_path, archive_path, progress_cb=progress_download_cb)
         try:
             shutil.unpack_archive(archive_path, g.storage_dir)
