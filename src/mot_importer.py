@@ -168,16 +168,17 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
             for obj_class_data in obj_classes_data:
                 video_objects.extend(list(obj_class_data[3].values()))
 
+            progress = sly.Progress(f'Creating annotation for "{video_name}"', len(images), app_logger)
             new_meta = sly.ProjectMeta(sly.ObjClassCollection(obj_classes))
             meta = meta.merge(new_meta)
             g.api.project.update_meta(new_project.id, meta.to_json())
             file_info = g.api.video.upload_paths(new_dataset.id, [video_name], [video_path])
             new_frames_collection = sly.FrameCollection(new_frames)
             new_objects = sly.VideoObjectCollection(video_objects)
-            g.logger.info('Creating annotation for video {}'.format(video_name))
             ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects,
                                       frames=new_frames_collection)
             g.api.video.annotation.append(file_info[0].id, ann)
+            progress.iter_done_report()
     return meta
 
 
