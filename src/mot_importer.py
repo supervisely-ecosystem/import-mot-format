@@ -83,11 +83,10 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     for r, d, f in os.walk(curr_mot_dir):
         if r.split('/')[-1] == g.mot_bbox_filename:
             video_name = r.split('/')[-2] + g.video_ext
-            g.logger.info('Processing {} video'.format(video_name))
             video_path = os.path.join(curr_mot_dir, video_name)
             imgs_path = r[:-2] + 'img1'
             images = os.listdir(imgs_path)
-            progress = sly.Progress('Creating video and figures for frame', len(images), app_logger)
+            progress = sly.Progress(f'Importing "{video_name}"', len(images), app_logger)
             images_ext = images[0].split('.')[1]
             seqinfo_path = r[:-2] + g.seqinfo_file_name
             if os.path.isfile(seqinfo_path):
@@ -178,7 +177,6 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
             g.logger.info('Creating annotation for video {}'.format(video_name))
             ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects,
                                       frames=new_frames_collection)
-            g.logger.info('Uploading annotation for video {}'.format(video_name))
             g.api.video.annotation.append(file_info[0].id, ann)
     return meta
 
