@@ -1,7 +1,7 @@
 
 
 <div align="center" markdown>
-<img src="https://i.imgur.com/waji4Nl.png"/>
+<img src="https://i.imgur.com/L0I3dCO.png"/>
 
 
 # Import MOT
@@ -23,19 +23,30 @@
 
 ## Overview
 
-App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files` with this app. 
+App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`.
 
-Currently suppored datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`. Importing all MOT datasets at once approximately takes from 50 mins up to 70 mins for the first time.
+Currently suppored datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`.
 
-Folder structure of the MOT dataset is as follows:
+**1. Public Dataset structure**
 ```
-{root}/{dataset_name}/{train}/{video_name}/{gt + img1 + seqinfo.ini}   
-
 └── MOT.tar
     └── dataset_name
         └── train
             └── video_name
                  ├── gt
+                 |   └── gt.txt
+                 ├── img1
+                 └── seqinfo.ini
+```
+
+**2. Custom Dataset structure**
+```
+└── custom_data.tar
+    └── dataset_name
+        └── train
+            └── video_name
+                 ├── gt
+                 |   └── gt_class_name.txt # e.g. gt_car.txt
                  ├── img1
                  └── seqinfo.ini
 ```
@@ -44,8 +55,8 @@ The meaning of the individual elements is:
 
 - `dataset_name` name of dataset in created project.
 - `video_name` name of video in created dataset.
-- `gt` folder with text-files (format: `gt_{classname}.txt`), containing one object instance per line. Each line contain 10 values. More about MOT format value you can read  [here](https://motchallenge.net/instructions/).
-- `img1` folder with images the video consists of.
+- `gt` folder with text-files (format: `gt.txt` or `gt_{classname}.txt` for custom data), containing one object instance per line. Each line contain 10 values. More about MOT format values you can read [here](https://motchallenge.net/instructions/).
+- `img1` folder with images for video.
 - `seqinfo.ini` file with images and video information.
 
 You can download example of MOT15 dataset [here](https://motchallenge.net/data/MOT15/).
@@ -71,7 +82,7 @@ Or your dataset in MOT format by path to your archive in `Team Files`.
 
 <img src="https://i.imgur.com/O8RWL8E.png" width="600px"/>
 
-Press `RUN`button. Now the window with program running logs will aappear. You don't have to wait for the program to finish execution(You can safely close the window)
+After pressing the `Run` button you will be redirected to the `Tasks` page.
 
 ## How to use
 
