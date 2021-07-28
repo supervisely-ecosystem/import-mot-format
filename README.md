@@ -70,17 +70,17 @@ After application execution, you will be redirected to `Tasks` page and `mot_vid
 
 **Step 2**: Open `Plugins & Apps` -> `import-mot-format` -> `Run` 
 
-<img src="https://i.imgur.com/H8L9XGO.png"/>
+<img src="https://i.imgur.com/o8Hoyig.png"/>
 
 **Step 3**: Select datasets import mode.
 
 Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
 
-<img src="https://i.imgur.com/tEwzxlM.png" width="600px"/>
+<img src="https://i.imgur.com/Ifz2KwX.png" width="600px"/>
 
 Or your dataset in MOT format by path to your archive in `Team Files`.
 
-<img src="https://i.imgur.com/O8RWL8E.png" width="600px"/>
+<img src="https://i.imgur.com/agKDn2A.png" width="600px"/>
 
 After pressing the `Run` button you will be redirected to the `Tasks` page.
 
