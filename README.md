@@ -23,7 +23,7 @@
 
 ## Overview
 
-App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`.
+App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`. Backward compatible with [`Export to MOT`](https://github.com/supervisely-ecosystem/export-to-mot-format) app.
 
 Currently supported datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`.
 
