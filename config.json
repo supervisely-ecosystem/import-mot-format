@@ -13,5 +13,5 @@
   "isolate": true,
   "headless": true,
   "icon": "https://i.imgur.com/7W5ExVy.png",
-  "icon_background": "#FFFFFF"
+  "icon_cover": true
 }
