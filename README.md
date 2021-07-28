@@ -25,7 +25,7 @@
 
 App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`.
 
-Currently suppored datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`.
+Currently supported datasets from [MOTChallenge](https://motchallenge.net/): `MOT15`, `MOT16`, `MOT17` and `MOT20`.
 
 **1. Public Dataset structure**
 ```
@@ -72,13 +72,13 @@ After application execution, you will be redirected to `Tasks` page and `mot_vid
 
 <img src="https://i.imgur.com/o8Hoyig.png"/>
 
-**Step 3**: Select datasets import mode.
+**Step 3**: Select import mode.
 
-Your can choose and download datasets from [MOTChallenge](https://motchallenge.net/).
+Your can download selected datasets from [MOTChallenge](https://motchallenge.net/).
 
 <img src="https://i.imgur.com/Ifz2KwX.png" width="600px"/>
 
-Or your dataset in MOT format by path to your archive in `Team Files`.
+Or your custom dataset in MOT format by path to your archive in `Team Files`.
 
 <img src="https://i.imgur.com/agKDn2A.png" width="600px"/>
 
