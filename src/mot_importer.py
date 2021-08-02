@@ -82,7 +82,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     new_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
     # ============== add test MOT15 ========================================================================
     test_dir = os.path.join(curr_mot_dir, 'test')
-    if dir_exists(test_dir):
+    if dir_exists(test_dir) and ds_name == 'MOT15':
         new_dataset = g.api.dataset.create(new_project.id, ds_name + '_test', change_name_if_conflict=True)
         test_subdirs = os.listdir(test_dir)
         for test_subdir in test_subdirs:
