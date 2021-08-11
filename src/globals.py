@@ -37,7 +37,8 @@ else:
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
 
-    #test_data = os.environ['modal.state.testData']
-    test_data = os.environ.get("modal.state.testData")
-    logger.warn('mot_ds_names: {}'.format(mot_ds_names))
+    test_data = bool(os.environ.get("modal.state.testData", False))
     logger.warn('test_data: {}'.format(test_data))
+    logger.warn('test_data: {}'.format(type(test_data)))
+
+
