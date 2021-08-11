@@ -29,26 +29,52 @@ Currently supported datasets from [MOTChallenge](https://motchallenge.net/): `MO
 
 **1. Public Dataset structure**
 ```
-└── MOT.tar
-    └── dataset_name
+.
+└── MOT#.tar
+    └── MOT#
+        ├── test
+        │   └── video_name
+        |       ├── det
+        |       │   └── det.txt
+        │       ├── img1
+        │       │   ├── 000001.jpg
+        │       │   ├── 000002.jpg
+        │       │   └── ...
+        │       └── seqinfo.ini
         └── train
             └── video_name
-                 ├── gt
-                 |   └── gt.txt
-                 ├── img1
-                 └── seqinfo.ini
+                ├── det
+                │   └── det.txt
+                ├── gt
+                │   └── gt.txt
+                ├── img1
+                │   ├── 000001.jpg
+                │   ├── 000002.jpg
+                │   └── ...
+                └── seqinfo.ini
 ```
 
 **2. Custom Dataset structure**
 ```
-└── custom_data.tar
+.
+└── CUSTOM_MOT.tar
     └── dataset_name
+        ├── test
+        │   └── video_name
+        │       ├── img1
+        │       │   ├── 000001.jpg
+        │       │   ├── 000002.jpg
+        │       │   └── ...
+        │       └── seqinfo.ini
         └── train
             └── video_name
-                 ├── gt
-                 |   └── gt_class_name.txt # e.g. gt_car.txt
-                 ├── img1
-                 └── seqinfo.ini
+                ├── gt
+                │   └── gt.txt # gt_class_name.txt e.g. gt_car.txt for custom class
+                ├── img1
+                │   ├── 000001.jpg
+                │   ├── 000002.jpg
+                │   └── ...
+                └── seqinfo.ini
 ```
 
 The meaning of the individual elements is:
@@ -61,7 +87,7 @@ The meaning of the individual elements is:
 
 You can download example of MOT15 dataset [here](https://motchallenge.net/data/MOT15/).
 
-Current version of application supports only `gt` file annotations.
+**Current version of application supports only `gt` file annotations.**
 
 After application execution, you will be redirected to `Tasks` page and `mot_video` project will be created in your workspace. New Supervisely project could contain any number of classes: e.g. `MOT{15,16,17,20}` datasets will contain only `pedestrian` class with shape `Rectangle`(due to the fact that only objects of the pedestrian class are labelled in source datasets). Also new project will contain `None` type tag with name `ignore_conf`. Tag indicates that you do not need to take into account this figure in the current frame for evaluating. More about MOT format and `conf` value you can read [here](https://motchallenge.net/instructions/).
 
