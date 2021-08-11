@@ -224,9 +224,8 @@ def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
         check_mot_format(curr_mot_dir)
         dataset_name = get_file_name(archive_name)
         test_dataset_name = dataset_name + '_test'
-        #import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
+        import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
         if g.download_test_data:
-            app_logger.warn('download_test_data {}'.format(g.download_test_data))
             import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
     else:
         mot_dirs = os.listdir(g.storage_dir)
