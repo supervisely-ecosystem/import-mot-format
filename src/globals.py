@@ -1,4 +1,4 @@
-import os
+import os, json
 import supervisely_lib as sly
 
 
@@ -30,9 +30,13 @@ if mot_dataset == custom_ds:
    ARH_NAMES = [os.path.basename(ds_path)]
    LINKS = [None]
 else:
-    mot_ds_names_str = os.environ['modal.state.currDatasets']
-    mot_ds_names = mot_ds_names_str.replace('\'', '')
-    mot_ds_names = mot_ds_names.replace(' ', '')
-    mot_ds_names = mot_ds_names[1:-1].split(',')
+    # mot_ds_names_str = os.environ['modal.state.currDatasets']
+    # mot_ds_names = mot_ds_names_str.replace('\'', '')
+    # mot_ds_names = mot_ds_names.replace(' ', '')
+    # mot_ds_names = mot_ds_names[1:-1].split(',')
+    mot_ds_names = json.loads(os.environ['modal.state.currDatasets'])
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
+    test_data = json.loads(os.environ['modal.state.testData'])
+    logger.warn('mot_ds_names: {}'.format(mot_ds_names))
+    logger.warn('test_data: {}'.format(test_data))
