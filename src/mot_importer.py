@@ -3,7 +3,7 @@ import cv2
 import globals as g
 import supervisely_lib as sly
 from collections import defaultdict
-from supervisely_lib.io.fs import get_file_name, remove_dir, dir_exists, get_file_ext
+from supervisely_lib.io.fs import get_file_name, dir_exists
 from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
 
@@ -77,8 +77,7 @@ def img_size_from_seqini(txt_path):
 
 
 def import_test_dataset(new_project, ds_name, test_dir, app_logger):
-    #test_dir = os.path.join(curr_mot_dir, 'test')
-    if dir_exists(test_dir):  # and ds_name == 'MOT15':
+    if dir_exists(test_dir):
         test_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
         test_subdirs = os.listdir(test_dir)
         for test_subdir in test_subdirs:
@@ -108,33 +107,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
     obj_classes = []
     obj_class_names = []
     new_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
-    # ============== add test MOT15 ========================================================================
-    # test_dir = os.path.join(curr_mot_dir, 'test')
-    # if dir_exists(test_dir): #and ds_name == 'MOT15':
-    #     test_dataset = g.api.dataset.create(new_project.id, ds_name + '_test', change_name_if_conflict=True)
-    #     test_subdirs = os.listdir(test_dir)
-    #     for test_subdir in test_subdirs:
-    #         video_name = test_subdir + g.video_ext
-    #         video_path = os.path.join(test_dir, video_name)
-    #         imgs_path = os.path.join(test_dir, test_subdir, 'img1')
-    #         images = os.listdir(imgs_path)
-    #         progress = sly.Progress(f'Importing "{video_name}"', len(images), app_logger)
-    #         images_ext = images[0].split('.')[1]
-    #         seqinfo_path = os.path.join(test_dir, test_subdir, g.seqinfo_file_name)
-    #         if os.path.isfile(seqinfo_path):
-    #             img_size, frame_rate = img_size_from_seqini(seqinfo_path)
-    #         else:
-    #             img = sly.image.read(os.path.join(imgs_path, images[0]))
-    #             img_size = (img.shape[1], img.shape[0])
-    #             frame_rate = g.frame_rate_default
-    #         video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'MP4V'), frame_rate, img_size)
-    #         for image_id in range(1, len(images) + 1):
-    #             image_name = str(image_id).zfill(g.image_name_length) + '.' + images_ext
-    #             video.write(cv2.imread(os.path.join(imgs_path, image_name)))
-    #             progress.iter_done_report()
-    #         video.release()
-    #         file_info = g.api.video.upload_paths(test_dataset.id, [video_name], [video_path])
-    # ==========================================================================================================
+
     for r, d, f in os.walk(curr_mot_dir):
         if r.split('/')[-1] == g.mot_bbox_filename:
             video_name = r.split('/')[-2] + g.video_ext
@@ -242,7 +215,6 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
 def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
     if g.mot_dataset != g.custom_ds:
         if get_file_name(archive_name) in ['MOT16']:
-            #remove_dir(os.path.join(g.storage_dir, 'test'))
             curr_mot_dir = os.path.join(g.storage_dir, 'train')
             curr_test_mot_dir = os.path.join(g.storage_dir, 'test')
         else:
@@ -253,7 +225,8 @@ def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
         dataset_name = get_file_name(archive_name)
         test_dataset_name = dataset_name + '_test'
         import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
-        import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
+        if g.download_test_data:
+            import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
     else:
         mot_dirs = os.listdir(g.storage_dir)
         mot_dirs.remove(archive_name)
