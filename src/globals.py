@@ -37,7 +37,8 @@ else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
     logger.warn('{}'.format(mot_ds_names_str))
     logger.warn('{}'.format(type(mot_ds_names_str)))
-    if mot_ds_names_str == []:
+    if len(mot_ds_names_str) == 2:
+        logger.warn('{}'.format(mot_ds_names_str))
         my_app.show_modal_window("No datasets selected for import")
         my_app.stop()
     mot_ds_names = mot_ds_names_str.replace('\'', '')
