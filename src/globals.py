@@ -34,8 +34,9 @@ if mot_dataset == custom_ds:
     if not ds_path:
         logger.warn('Path to tar file in Team Files is empty, check your input data')
         my_app.stop()
-    ARH_NAMES = [os.path.basename(ds_path)]
-    LINKS = [None]
+    else:
+        ARH_NAMES = [os.path.basename(ds_path)]
+        LINKS = [None]
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
     if len(mot_ds_names_str) == 2:
