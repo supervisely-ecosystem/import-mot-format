@@ -24,6 +24,7 @@ input_archive_ext = '.zip'
 custom_ds = 'custom'
 train = 'train'
 test = 'test'
+train_suffix = '_train'
 test_suffix = '_test'
 
 mot_dataset = os.environ['modal.state.motDataset']
