@@ -229,6 +229,7 @@ def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
             import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
     else:
         mot_dirs = os.listdir(g.storage_dir)
+        app_logger.warn('mot_dirs: {}'.format(mot_dirs))
         mot_dirs.remove(archive_name)
         for curr_dir in mot_dirs:
             curr_mot_dir = os.path.join(g.storage_dir, curr_dir)
