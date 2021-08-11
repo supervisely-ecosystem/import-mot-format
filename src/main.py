@@ -14,10 +14,6 @@ import mot_importer
 @sly.timeit
 def import_mot_format(api: sly.Api, task_id, context, state, app_logger):
 
-    app_logger.warn('{}'.format(g.LINKS))
-    if len(g.LINKS) == 0:
-        g.my_app.show_modal_window("No datasets selected for import")
-
     new_project = api.project.create(g.WORKSPACE_ID, g.project_name, type=sly.ProjectType.VIDEOS,
                                      change_name_if_conflict=True)
 
