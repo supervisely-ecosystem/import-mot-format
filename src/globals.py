@@ -30,10 +30,12 @@ test_suffix = '_test'
 mot_dataset = os.environ['modal.state.motDataset']
 
 if mot_dataset == custom_ds:
-   ds_path = os.environ['modal.state.dsPath']
-   logger.warn('{}'.format(ds_path))
-   ARH_NAMES = [os.path.basename(ds_path)]
-   LINKS = [None]
+    ds_path = os.environ.get('modal.state.dsPath')
+    if not ds_path:
+        logger.warn('Path to tar file in Team Files is empty, check your input data')
+        my_app.stop()
+    ARH_NAMES = [os.path.basename(ds_path)]
+    LINKS = [None]
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
     if len(mot_ds_names_str) == 2:
