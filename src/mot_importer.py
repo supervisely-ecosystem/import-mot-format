@@ -87,7 +87,7 @@ def import_test_dataset(new_project, ds_name, test_dir, app_logger):
             imgs_path = os.path.join(test_dir, test_subdir, 'img1')
             images = os.listdir(imgs_path)
             progress = sly.Progress(f'Importing "{video_name}" to "{ds_name}" dataset', len(images), app_logger)
-            images_ext = get_file_ext(images[0])   #images[0].split('.')[1]
+            images_ext = images[0].split('.')[1]
             seqinfo_path = os.path.join(test_dir, test_subdir, g.seqinfo_file_name)
             if os.path.isfile(seqinfo_path):
                 img_size, frame_rate = img_size_from_seqini(seqinfo_path)
@@ -142,7 +142,7 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
             imgs_path = r[:-2] + 'img1'
             images = os.listdir(imgs_path)
             progress = sly.Progress(f'Importing "{video_name}" to "{ds_name}" dataset', len(images), app_logger)
-            images_ext = get_file_ext(images[0]) #images[0].split('.')[1]
+            images_ext = images[0].split('.')[1]
             seqinfo_path = r[:-2] + g.seqinfo_file_name
             if os.path.isfile(seqinfo_path):
                 img_size, frame_rate = img_size_from_seqini(seqinfo_path)
