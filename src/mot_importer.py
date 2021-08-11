@@ -3,7 +3,7 @@ import cv2
 import globals as g
 import supervisely_lib as sly
 from collections import defaultdict
-from supervisely_lib.io.fs import get_file_name, remove_dir, dir_exists
+from supervisely_lib.io.fs import get_file_name, remove_dir, dir_exists, get_file_ext
 from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
 
@@ -79,15 +79,15 @@ def img_size_from_seqini(txt_path):
 def import_test_dataset(new_project, ds_name, test_dir, app_logger):
     #test_dir = os.path.join(curr_mot_dir, 'test')
     if dir_exists(test_dir):  # and ds_name == 'MOT15':
-        test_dataset = g.api.dataset.create(new_project.id, ds_name + '_test', change_name_if_conflict=True)
+        test_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
         test_subdirs = os.listdir(test_dir)
         for test_subdir in test_subdirs:
             video_name = test_subdir + g.video_ext
             video_path = os.path.join(test_dir, video_name)
             imgs_path = os.path.join(test_dir, test_subdir, 'img1')
             images = os.listdir(imgs_path)
-            progress = sly.Progress(f'Importing "{video_name}"', len(images), app_logger)
-            images_ext = images[0].split('.')[1]
+            progress = sly.Progress(f'Importing "{video_name}" to "{ds_name}" dataset', len(images), app_logger)
+            images_ext = get_file_ext(images[0])   #images[0].split('.')[1]
             seqinfo_path = os.path.join(test_dir, test_subdir, g.seqinfo_file_name)
             if os.path.isfile(seqinfo_path):
                 img_size, frame_rate = img_size_from_seqini(seqinfo_path)
@@ -141,8 +141,8 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
             video_path = os.path.join(curr_mot_dir, video_name)
             imgs_path = r[:-2] + 'img1'
             images = os.listdir(imgs_path)
-            progress = sly.Progress(f'Importing "{video_name}"', len(images), app_logger)
-            images_ext = images[0].split('.')[1]
+            progress = sly.Progress(f'Importing "{video_name}" to "{ds_name}" dataset', len(images), app_logger)
+            images_ext = get_file_ext(images[0]) #images[0].split('.')[1]
             seqinfo_path = r[:-2] + g.seqinfo_file_name
             if os.path.isfile(seqinfo_path):
                 img_size, frame_rate = img_size_from_seqini(seqinfo_path)
