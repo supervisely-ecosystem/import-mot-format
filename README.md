@@ -106,7 +106,7 @@ Your can download selected datasets from [MOTChallenge](https://motchallenge.net
 
 Or your custom dataset in MOT format by path to your archive in `Team Files`.
 
-<img src="https://i.imgur.com/rDU370u.png" width="600px"/>
+<img src="https://i.imgur.com/xIf6VIL.png" width="600px"/>
 
 After pressing the `Run` button you will be redirected to the `Tasks` page.
 
