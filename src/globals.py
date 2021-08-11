@@ -40,7 +40,5 @@ else:
     mot_ds_names = mot_ds_names[1:-1].split(',')
     ARH_NAMES = [ds_name + input_archive_ext for ds_name in mot_ds_names]
     LINKS = [link_path + arch_name for arch_name in ARH_NAMES]
-    if len(LINKS) == 0:
-        my_app.show_modal_window("No datasets selected for import")
 
     download_test_data = bool(os.environ.get("modal.state.testData", False))
