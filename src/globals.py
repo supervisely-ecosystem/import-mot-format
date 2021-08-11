@@ -35,6 +35,7 @@ if mot_dataset == custom_ds:
    LINKS = [None]
 else:
     mot_ds_names_str = os.environ['modal.state.currDatasets']
+    logger.warn('{}'.format(mot_ds_names_str))
     if len(mot_ds_names_str) == 0:
         my_app.show_modal_window("No datasets selected for import")
         my_app.stop()
