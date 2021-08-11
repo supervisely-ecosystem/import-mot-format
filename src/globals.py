@@ -34,7 +34,7 @@ if mot_dataset == custom_ds:
     if not ds_path:
         logger.warn('Path to tar file in Team Files is empty, check your input data')
         my_app.stop()
-        time.sleep(0.5)
+        time.sleep(1)
     ARH_NAMES = [os.path.basename(ds_path)]
     LINKS = [None]
 else:
@@ -42,7 +42,7 @@ else:
     if len(mot_ds_names_str) == 2:
         logger.warn('No datasets selected for import')
         my_app.stop()
-        time.sleep(0.5)
+        time.sleep(1)
     mot_ds_names = mot_ds_names_str.replace('\'', '')
     mot_ds_names = mot_ds_names.replace(' ', '')
     mot_ds_names = mot_ds_names[1:-1].split(',')
