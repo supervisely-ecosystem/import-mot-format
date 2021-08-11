@@ -115,3 +115,8 @@ After pressing the `Run` button you will be redirected to the `Tasks` page.
 Result project will be saved in your current `Workspace` with name `mot_video`.
 
 <img src="https://i.imgur.com/tA0lrEN.png"/>
+
+### Watch Tutorial Video
+<a data-key="sly-embeded-video-link" href="https://youtu.be/i1hugMhGSY88" data-video-code="i1hugMhGSY88">
+    <img src="https://i.imgur.com/5cj5ilu.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;">
+</a>
