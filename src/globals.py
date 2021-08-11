@@ -34,7 +34,7 @@ if mot_dataset == custom_ds:
     if not ds_path:
         logger.warn('Path to tar file in Team Files is empty, check your input data')
         my_app.stop()
-        time.sleep(1)
+        time.sleep(5)
     ARH_NAMES = [os.path.basename(ds_path)]
     LINKS = [None]
 else:
