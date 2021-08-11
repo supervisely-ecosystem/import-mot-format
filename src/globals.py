@@ -40,3 +40,4 @@ else:
     test_data = os.environ['modal.state.testData']
     logger.warn('mot_ds_names: {}'.format(mot_ds_names))
     logger.warn('test_data: {}'.format(test_data))
+    logger.warn('test_data_type: {}'.format(type(test_data)))
