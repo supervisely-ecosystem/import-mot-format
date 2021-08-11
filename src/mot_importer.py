@@ -215,25 +215,29 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
 def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
     if g.mot_dataset != g.custom_ds:
         if get_file_name(archive_name) in ['MOT16']:
-            curr_mot_dir = os.path.join(g.storage_dir, 'train')
-            curr_test_mot_dir = os.path.join(g.storage_dir, 'test')
+            curr_mot_dir = os.path.join(g.storage_dir, g.train)
+            curr_test_mot_dir = os.path.join(g.storage_dir, g.test)
         else:
             curr_mot_dir = os.path.join(g.storage_dir, get_file_name(archive_name))
-            curr_test_mot_dir = os.path.join(curr_mot_dir, 'test')
+            curr_test_mot_dir = os.path.join(curr_mot_dir, g.test)
         g.logger.info('Checking input MOT format')
         check_mot_format(curr_mot_dir)
         dataset_name = get_file_name(archive_name)
-        test_dataset_name = dataset_name + '_test'
         import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
         if g.download_test_data:
+            test_dataset_name = dataset_name + g.test_suffix
             import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
     else:
         mot_dirs = os.listdir(g.storage_dir)
-        app_logger.warn('mot_dirs: {}'.format(mot_dirs))
         mot_dirs.remove(archive_name)
         for curr_dir in mot_dirs:
             curr_mot_dir = os.path.join(g.storage_dir, curr_dir)
             g.logger.info('Checking input MOT format')
-            check_mot_format(curr_mot_dir)
+            if len(os.listdir(curr_mot_dir)) > 1 or g.test not in os.listdir(curr_mot_dir):
+                check_mot_format(curr_mot_dir)
             dataset_name = curr_dir
             import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
+            if g.test in os.listdir(curr_mot_dir):
+                test_dataset_name = dataset_name + g.test_suffix
+                curr_test_mot_dir = os.path.join(curr_mot_dir, g.test)
+                import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)

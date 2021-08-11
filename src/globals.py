@@ -22,6 +22,9 @@ logger = sly.logger
 link_path = 'https://motchallenge.net/data/'
 input_archive_ext = '.zip'
 custom_ds = 'custom'
+train = 'train'
+test = 'test'
+test_suffix = '_test'
 
 mot_dataset = os.environ['modal.state.motDataset']
 
