@@ -20,10 +20,14 @@
                     </div>
                 </el-checkbox-group>
 
-              <div class="mt5">
-                <el-checkbox :disabled="state.currDatasets.length === 0" v-model="state.testData" style="margin: 5px 10px 0 0">Upload test data
-                </el-checkbox>
-              </div>
+                <div class="fflex align-start mt5">
+                    <el-checkbox :disabled="state.currDatasets.length === 0" v-model="state.testData"
+                                 style="margin: 5px 10px 0 0">
+                    </el-checkbox>
+                    <sly-field class="mt20" title="Test data"
+                               description="Imports test data for selected MOT datasets">
+                    </sly-field>
+                </div>
 
             </sly-field>
         </el-tab-pane>
