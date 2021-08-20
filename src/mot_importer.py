@@ -151,8 +151,6 @@ def import_test_dataset(new_project, ds_name, test_dir, meta, app_logger):
                 video.write(cv2.imread(os.path.join(imgs_path, image_name)))
                 progress.iter_done_report()
 
-
-
             video.release()
             file_info = g.api.video.upload_paths(test_dataset.id, [video_name], [video_path])
 
