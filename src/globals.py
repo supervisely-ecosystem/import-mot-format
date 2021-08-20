@@ -26,6 +26,10 @@ train = 'train'
 test = 'test'
 train_suffix = '_train'
 test_suffix = '_test'
+det_folder = 'det'
+det_anns_file_name = 'det.txt'
+
+
 
 mot_dataset = os.environ['modal.state.motDataset']
 

@@ -8,6 +8,22 @@ from supervisely_lib.video_annotation.video_tag import VideoTag
 from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
 
 
+def get_sl_bbox(coords, img_size):
+    left, top, w, h = coords
+    bottom = top + h
+    if round(bottom) >= img_size[1] - 1:
+        bottom = img_size[1] - 2
+    right = left + w
+    if round(right) >= img_size[0] - 1:
+        right = img_size[0] - 2
+    if left < 0:
+        left = 0
+    if top < 0:
+        top = 0
+
+    return top, left, bottom, right
+
+
 def check_mot_format(input_dir):
     gt_not_exist = True
     possible_images_extentions = set(['jpg', 'jpeg', 'mpo', 'bmp', 'png', 'webp'])
@@ -67,6 +83,20 @@ def get_frames_with_objects_gt(txt_path):
     return frame_to_objects, frames_without_objs_conf
 
 
+def get_frames_with_objects_det(txt_path):
+    frame_to_objects = defaultdict(list)
+    with open(txt_path, "r") as file:
+        all_lines = file.readlines()
+        for line in all_lines:
+            line = line.split('\n')[0].split(',')[:-4]
+            if len(line) == 0:
+                continue
+            line = list(map(lambda x: round(float(x)), line))
+            line = list(map(int, line))
+            frame_to_objects[line[0]].extend([line[2:6]])
+    return frame_to_objects
+
+
 def img_size_from_seqini(txt_path):
     with open(txt_path, "r") as file:
         all_lines = file.readlines()
@@ -76,14 +106,17 @@ def img_size_from_seqini(txt_path):
     return (img_width, img_height), frame_rate
 
 
-def import_test_dataset(new_project, ds_name, test_dir, app_logger):
+def import_test_dataset(new_project, ds_name, test_dir, meta, app_logger):
     if dir_exists(test_dir):
+        obj_class = sly.ObjClass(g.obj_class_pedestrian, sly.Rectangle)
         test_dataset = g.api.dataset.create(new_project.id, ds_name, change_name_if_conflict=True)
         test_subdirs = os.listdir(test_dir)
         for test_subdir in test_subdirs:
             video_name = test_subdir + g.video_ext
             video_path = os.path.join(test_dir, video_name)
             imgs_path = os.path.join(test_dir, test_subdir, 'img1')
+            ann_path = os.path.join(test_dir, test_subdir, g.det_folder)
+            frame_to_objects = get_frames_with_objects_det(os.path.join(ann_path, g.det_anns_file_name))
             images = os.listdir(imgs_path)
             progress = sly.Progress(f'Importing "{video_name}" to "{ds_name}" dataset', len(images), app_logger)
             images_ext = images[0].split('.')[1]
@@ -95,12 +128,44 @@ def import_test_dataset(new_project, ds_name, test_dir, app_logger):
                 img_size = (img.shape[1], img.shape[0])
                 frame_rate = g.frame_rate_default
             video = cv2.VideoWriter(video_path, cv2.VideoWriter_fourcc(*'MP4V'), frame_rate, img_size)
+
+            new_frames = []
+            new_video_objects = []
             for image_id in range(1, len(images) + 1):
+                new_figures = []
+                frame_objects_coords = frame_to_objects[image_id]
+                for curr_coord in frame_objects_coords:
+                    video_object = sly.VideoObject(obj_class)
+                    new_video_objects.append(video_object)
+                    top, left, bottom, right = get_sl_bbox(curr_coord, img_size)
+                    if right <= 0 or bottom <= 0 or left >= img_size[0] or top >= img_size[1]:
+                        continue
+                    curr_geometry = sly.Rectangle(top, left, bottom, right)
+                    figure = sly.VideoFigure(video_object, curr_geometry, image_id - 1)
+                    new_figures.append(figure)
+
+                new_frame = sly.Frame(image_id - 1, new_figures)
+                new_frames.append(new_frame)
+
                 image_name = str(image_id).zfill(g.image_name_length) + '.' + images_ext
                 video.write(cv2.imread(os.path.join(imgs_path, image_name)))
                 progress.iter_done_report()
+
+
+
             video.release()
             file_info = g.api.video.upload_paths(test_dataset.id, [video_name], [video_path])
+
+            ann_progress = sly.Progress(f'Creating annotation for "{video_name}"', 1, app_logger)
+            new_meta = sly.ProjectMeta(sly.ObjClassCollection([obj_class]))
+            meta = meta.merge(new_meta)
+            g.api.project.update_meta(new_project.id, meta.to_json())
+            new_frames_collection = sly.FrameCollection(new_frames)
+            new_objects = sly.VideoObjectCollection(new_video_objects)
+            ann = sly.VideoAnnotation((img_size[1], img_size[0]), len(new_frames), objects=new_objects,
+                                      frames=new_frames_collection)
+            g.api.video.annotation.append(file_info[0].id, ann)
+            ann_progress.iter_done_report()
 
 
 def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_logger):
@@ -170,17 +235,8 @@ def import_dataset(new_project, ds_name, curr_mot_dir, meta, conf_tag_meta, app_
                                              for curr_frame_range in curr_frame_ranges]
                                 curr_obj_class_data[3][idx] = sly.VideoObject(curr_obj_class_data[2],
                                                                            tags=VideoTagCollection(conf_tags))
-                        left, top, w, h = coords
-                        bottom = top + h
-                        if round(bottom) >= img_size[1] - 1:
-                            bottom = img_size[1] - 2
-                        right = left + w
-                        if round(right) >= img_size[0] - 1:
-                            right = img_size[0] - 2
-                        if left < 0:
-                            left = 0
-                        if top < 0:
-                            top = 0
+
+                        top, left, bottom, right = get_sl_bbox(coords, img_size)
                         if right <= 0 or bottom <= 0 or left >= img_size[0] or top >= img_size[1]:
                             continue
 
@@ -226,7 +282,7 @@ def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
         import_dataset(new_project, dataset_name, curr_mot_dir, meta, conf_tag_meta, app_logger)
         if g.download_test_data:
             test_dataset_name = get_file_name(archive_name) + g.test_suffix
-            import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
+            import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, meta, app_logger)
     else:
         mot_dirs = os.listdir(g.storage_dir)
         mot_dirs.remove(archive_name)
