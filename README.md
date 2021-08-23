@@ -106,7 +106,7 @@ You can download example of MOT15 dataset [here](https://motchallenge.net/data/M
 # How to Use
 1. Add [Import MOT](https://ecosystem.supervise.ly/apps/import-mot-format) to your team from Ecosystem.
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="https://imgur.com/aIlcJ7b.png" width="350px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="https://imgur.com/QQTBz0C.png" width="350px" style='padding-bottom: 20px'/>  
 
 2. Run app from the `Plugins & Apps` chapter:
 
