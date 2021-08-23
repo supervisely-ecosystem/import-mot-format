@@ -294,4 +294,4 @@ def start(archive_name, new_project, meta, conf_tag_meta, app_logger):
             if g.test in os.listdir(curr_mot_dir):
                 test_dataset_name = curr_dir + g.test_suffix
                 curr_test_mot_dir = os.path.join(curr_mot_dir, g.test)
-                import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, app_logger)
+                import_test_dataset(new_project, test_dataset_name, curr_test_mot_dir, meta, app_logger)
