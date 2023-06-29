@@ -1,7 +1,7 @@
 
 
 <div align="center" markdown>
-<img src="https://i.imgur.com/L0I3dCO.png"/>
+<img src="media/poster.png"/>
 
 
 # Import MOT
@@ -106,18 +106,18 @@ You can download example of MOT15 dataset [here](https://motchallenge.net/data/M
 # How to Use
 1. Add [Import MOT](https://ecosystem.supervise.ly/apps/import-mot-format) to your team from Ecosystem.
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="https://imgur.com/QQTBz0C.png" width="350px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="media/htu.png" width="350px" style='padding-bottom: 20px'/>  
 
 2. Run app from the `Plugins & Apps` chapter:
 
-<img src="https://imgur.com/6nPIM21.png"/>
+<img src="media/htu2.png"/>
 
 3. Select import mode:
 
 - Your can download selected datasets from [MOTChallenge](https://motchallenge.net/).  
 - Use your custom dataset in MOT format by path to your archive in `Team Files`.
 
-<img src="https://imgur.com/8lzZUPc.png" width="600px"/>
+<img src="media/htu3.png" width="600px"/>
 
 4. After pressing the `Run` button you will be redirected to the `Tasks` page.
 
@@ -125,9 +125,9 @@ You can download example of MOT15 dataset [here](https://motchallenge.net/data/M
 
 Result project will be saved in your current `Workspace` with name `mot_video`.
 
-<img src="https://i.imgur.com/tA0lrEN.png"/>
+<img src="media/r.png"/>
 
 # Watch Demo
 <a data-key="sly-embeded-video-link" href="https://youtu.be/i1hugMhGSY8" data-video-code="i1hugMhGSY8">
-    <img src="https://i.imgur.com/5cj5ilu.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;">
+    <img src="media/demo.png" alt="SLY_EMBEDED_VIDEO_LINK"  style="max-width:100%;">
 </a>
