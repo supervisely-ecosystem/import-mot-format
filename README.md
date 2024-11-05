@@ -14,17 +14,17 @@
   <a href="#Watch-Demo">Demo</a>
 </p>
 
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervise.ly/apps/supervisely-ecosystem/import-mot-format)
-[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervise.ly/slack)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/supervisely-ecosystem/import-mot-format)
+[![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/import-mot-format)
-[![views](https://app.supervise.ly/img/badges/views/supervisely-ecosystem/import-mot-format.png)](https://supervise.ly)
-[![runs](https://app.supervise.ly/img/badges/runs/supervisely-ecosystem/import-mot-format.png)](https://supervise.ly)
+[![views](https://app.supervisely.com/img/badges/views/supervisely-ecosystem/import-mot-format.png)](https://supervisely.com)
+[![runs](https://app.supervisely.com/img/badges/runs/supervisely-ecosystem/import-mot-format.png)](https://supervisely.com)
 
 </div>
 
 # Overview
 
-App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervise.ly/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`.
+App converts data in [MOTChallenge](https://motchallenge.net/) format to [Supervisely](https://docs.supervisely.com/data-organization/00_ann_format_navi) format. You can import MOT datasets or your custom prepared archives located in `Team Files`.
 
 <!-- **Current version of application supports only `gt` file annotations.** -->
 
@@ -104,7 +104,7 @@ The meaning of the individual elements is:
 You can download example of MOT15 dataset [here](https://motchallenge.net/data/MOT15/).
 
 # How to Use
-1. Add [Import MOT](https://ecosystem.supervise.ly/apps/import-mot-format) to your team from Ecosystem.
+1. Add [Import MOT](https://ecosystem.supervisely.com/apps/import-mot-format) to your team from Ecosystem.
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="https://imgur.com/QQTBz0C.png" width="350px" style='padding-bottom: 20px'/>  
 
