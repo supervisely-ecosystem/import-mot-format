@@ -14,7 +14,7 @@
   <a href="#Watch-Demo">Demo</a>
 </p>
 
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](../../../../supervisely-ecosystem/import-mot-format)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/supervisely-ecosystem/import-mot-format)
 [![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/import-mot-format)
 [![views](https://app.supervisely.com/img/badges/views/supervisely-ecosystem/import-mot-format.png)](https://supervisely.com)
@@ -104,7 +104,7 @@ The meaning of the individual elements is:
 You can download example of MOT15 dataset [here](https://motchallenge.net/data/MOT15/).
 
 # How to Use
-1. Add [Import MOT](../../../../supervisely-ecosystem/import-mot-format) to your team from Ecosystem.
+1. Add [Import MOT](https://ecosystem.supervisely.com/apps/import-mot-format) to your team from Ecosystem.
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-mot-format" src="https://imgur.com/QQTBz0C.png" width="350px" style='padding-bottom: 20px'/>  
 
