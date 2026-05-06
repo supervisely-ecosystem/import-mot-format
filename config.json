@@ -1,6 +1,7 @@
 {
   "name": "Import MOT",
   "type": "app",
+  "instance_version": "6.15.60",
   "categories": [
     "Import"
   ],
