@@ -3,9 +3,9 @@ import shutil
 import dl_progress
 import requests
 import globals as g
-import supervisely_lib as sly
-from supervisely_lib.annotation.tag_meta import TagValueType
-from supervisely_lib.io.fs import download, file_exists
+import supervisely as sly
+from supervisely.annotation.tag_meta import TagValueType
+from supervisely.io.fs import download, file_exists
 
 import mot_importer
 

@@ -1,11 +1,11 @@
 import os
 import cv2
 import globals as g
-import supervisely_lib as sly
+import supervisely as sly
 from collections import defaultdict
-from supervisely_lib.io.fs import get_file_name, dir_exists
-from supervisely_lib.video_annotation.video_tag import VideoTag
-from supervisely_lib.video_annotation.video_tag_collection import VideoTagCollection
+from supervisely.io.fs import get_file_name, dir_exists
+from supervisely.video_annotation.video_tag import VideoTag
+from supervisely.video_annotation.video_tag_collection import VideoTagCollection
 
 
 def get_sl_bbox(coords, img_size):
